@@ -1,38 +1,32 @@
 module Component.Header where
 
+import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
+import MyUtils (className)
 
 header :: forall i p. HH.HTML i p
 header =
-  HH.footer
-    [ HP.style "padding:0.25em; border:solid black 1px; display:flex; justify-content:space-between;" ]
-    [ HH.div
-        [ HP.style "align-items:space-around; display:inline-flex; justify-content:space-around;" ]
-        --[ HP.style "margin: 0 1em;align-items:center" ]
-        [ HH.div
-            [ HP.style "margin:0em; padding: 1em; border: dotted red 1px; height:48px; width:48px;" ]
-            [ HH.a
-              [ HP.href "/" ]
-              [ HH.text "home" ]
+  HH.nav [ className "navbar navbar-expand-lg bg-body-tertiary" ]
+    [ HH.div [ className "container-fluid" ]
+        [ HH.a [ className "navbar-brand", HP.href "#" ] [ HH.text "KARL'S BLOG" ]
+        , HH.button [ className "navbar-toggler", HP.type_ HP.ButtonButton ]
+            [ HH.span
+                [ className "navbar-toggle-icon"
+                , HP.attr (H.AttrName "data-bs-toggle") "collapse"
+                , HP.attr (H.AttrName "data-bs-target") "#navbarSupportedContent"
+                ]
+                []
             ]
-        , HH.div
-            [ HP.style "margin:0em; padding: 1em" ]
-            [ HH.text "Hello, welcome to my blog!" ]
-        ]
-    , HH.ul
-        [ HP.style "margin: 0em; padding: 1em; align-items:space-around; display:inline-flex; justify-content:space-around;" ]
-        [ HH.li
-            [ HP.style "margin:0 1em" ]
-            [ HH.a
-                [ HP.href "https://nkarl.github.io/resume" ]
-                [ HH.text "resume" ]
-            ]
-        , HH.li
-            [ HP.style "margin:0 1em" ]
-            [ HH.a
-                [ HP.href "https://nkarl.github.io/contact" ]
-                [ HH.text "contact" ]
+        , HH.form [ className "d-flex" ]
+            [ HH.div [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
+                [ HH.ul [ className "navbar-nav me-auto mb-2 mb-lg-0" ]
+                    [ HH.li [ className "nav-item" ] [ HH.a [ className "nav-link active", HP.href "#" ] [ HH.text "HOME" ] ]
+                    , HH.li [ className "nav-item" ] [ HH.a [ className "nav-link", HP.href "#" ] [ HH.text "ARTICLES" ] ]
+                    ]
+                ]
+            , HH.input [ className "form-control me-2", HP.placeholder "search..." ]
+            , HH.button [ className "btn btn-outline-success", HP.type_ HP.ButtonSubmit ] [ HH.text "Search" ]
             ]
         ]
     ]

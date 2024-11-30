@@ -1,5 +1,5 @@
 {
-  description = "RealWorld spec in the PureScript Halogen framework";
+  description = "My New Blog";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
