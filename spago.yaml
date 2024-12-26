@@ -8,6 +8,7 @@ package:
     - effect
     - either
     - halogen
+    - halogen-bootstrap5
     - halogen-css
     - maybe
     - prelude

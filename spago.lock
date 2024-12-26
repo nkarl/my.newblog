@@ -12,6 +12,7 @@
             "effect",
             "either",
             "halogen",
+            "halogen-bootstrap5",
             "halogen-css",
             "maybe",
             "prelude",
@@ -54,6 +55,7 @@
             "functors",
             "gen",
             "halogen",
+            "halogen-bootstrap5",
             "halogen-css",
             "halogen-subscriptions",
             "halogen-vdom",
@@ -1131,6 +1133,14 @@
         "unsafe-reference",
         "web-file",
         "web-uievents"
+      ]
+    },
+    "halogen-bootstrap5": {
+      "type": "registry",
+      "version": "5.3.2",
+      "integrity": "sha256-NptxRQ8rVC2L4JiM604iJLSfCS81U41TSClka9fBu4w=",
+      "dependencies": [
+        "halogen"
       ]
     },
     "halogen-css": {

@@ -5,8 +5,8 @@ import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import MyUtils (className)
 
-header :: forall i p. HH.HTML i p
-header =
+component :: forall i p. HH.HTML i p
+component =
   HH.nav [ className "navbar navbar-expand-lg bg-body-tertiary" ]
     [ HH.div [ className "container-fluid" ]
         [ HH.a [ className "navbar-brand", HP.style "display:inline-flex", HP.href "#" ] [ HH.div [ HP.style "margin-right:0.5em" ] [ HH.text "KARL'S" ], HH.text "BLOG" ]
@@ -25,7 +25,7 @@ header =
                     , HH.li [ className "nav-item" ] [ HH.a [ className "nav-link", HP.href "#" ] [ HH.text "ARTICLES" ] ]
                     ]
                 ]
-            , HH.input [ className "form-control me-2", HP.placeholder "search..." ]
+            , HH.input [ className "form-control me-2", HP.placeholder "type to search..." ]
             , HH.button [ className "btn btn-outline-success", HP.type_ HP.ButtonSubmit ] [ HH.text "Search" ]
             ]
         ]

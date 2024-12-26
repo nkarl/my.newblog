@@ -1,13 +1,20 @@
 module Component.Footer where
 
 import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
+import MyUtils (className)
 
-footer :: forall i p. HH.HTML i p
-footer =
+component :: forall i p. HH.HTML i p
+component =
   HH.footer
-    [ HP.style "padding:1em; border:solid black 1px; text-align:center" ]
-    [ HH.div_
-      [ HH.text "© 2024 Charles Lambert Nguyen. All rights reserved."
-      ]
+    [ className "footer fixed-bottom mt-auto py-4 bg-body-tertiary" ]
+    [ HH.div
+        [ className "container d-flex d-wrap justify-content-center" ]
+        [ HH.div_
+            [ HH.span [ className "mb-3 mb-md-0 text-body-secondary" ]
+                [ HH.text "© 2025 Charles Lambert Nguyen. All rights reserved."
+                ]
+            ]
+        ]
     ]
+
+-- <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
