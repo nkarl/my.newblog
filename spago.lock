@@ -15,6 +15,7 @@
             "halogen-css",
             "maybe",
             "prelude",
+            "routing-duplex",
             "web-events"
           ],
           "build_plan": [
@@ -24,6 +25,7 @@
             "argonaut-core",
             "arraybuffer-types",
             "arrays",
+            "assert",
             "avar",
             "bifunctors",
             "catenable-lists",
@@ -83,6 +85,7 @@
             "random",
             "record",
             "refs",
+            "routing-duplex",
             "safe-coerce",
             "st",
             "strings",
@@ -728,6 +731,16 @@
         "tuples",
         "unfoldable",
         "unsafe-coerce"
+      ]
+    },
+    "assert": {
+      "type": "registry",
+      "version": "6.0.0",
+      "integrity": "sha256-hCSYcCw9kj3qujoDcriWhCdmrpPZoguSPDZhEMnTl3A=",
+      "dependencies": [
+        "console",
+        "effect",
+        "prelude"
       ]
     },
     "avar": {
@@ -1489,6 +1502,30 @@
       "dependencies": [
         "effect",
         "prelude"
+      ]
+    },
+    "routing-duplex": {
+      "type": "registry",
+      "version": "0.7.0",
+      "integrity": "sha256-hgWzZPft6067zYvoZ1n0y/dSz4H2jBNREwfC3qC/s8Y=",
+      "dependencies": [
+        "arrays",
+        "assert",
+        "control",
+        "effect",
+        "either",
+        "foldable-traversable",
+        "integers",
+        "js-uri",
+        "lazy",
+        "maybe",
+        "newtype",
+        "prelude",
+        "profunctor",
+        "quickcheck",
+        "record",
+        "strings",
+        "tuples"
       ]
     },
     "safe-coerce": {

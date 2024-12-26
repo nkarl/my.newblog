@@ -9,7 +9,7 @@ header :: forall i p. HH.HTML i p
 header =
   HH.nav [ className "navbar navbar-expand-lg bg-body-tertiary" ]
     [ HH.div [ className "container-fluid" ]
-        [ HH.a [ className "navbar-brand", HP.href "#" ] [ HH.text "KARL'S BLOG" ]
+        [ HH.a [ className "navbar-brand", HP.style "display:inline-flex", HP.href "#" ] [ HH.div [ HP.style "margin-right:0.5em" ] [ HH.text "KARL'S" ], HH.text "BLOG" ]
         , HH.button [ className "navbar-toggler", HP.type_ HP.ButtonButton ]
             [ HH.span
                 [ className "navbar-toggle-icon"
