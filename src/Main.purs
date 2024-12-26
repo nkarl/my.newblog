@@ -41,8 +41,7 @@ component =
 placeholder :: forall i p. HH.HTML i p
 placeholder =
   HH.div
-    --[ HP.style "min-height:79vh; margin: 1em 0; padding: 4rem; border:solid red 1px;" ]
-    [ className "card" ]
+    [ className "card mx-3 mt-3 border border-danger-subtle" ]
     [ HH.div [ className "container card-body mt-5 min-vh-100" ]
         [ HH.h1
             [ HP.style "text-align:center" ]
