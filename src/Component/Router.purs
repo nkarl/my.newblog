@@ -7,6 +7,7 @@ import Control.Monad.Trans.Class (lift)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Route (Route(..), routeCodec)
+import Data.Route as Route
 import Effect.Aff (Aff, effectCanceler, makeAff)
 import Effect.Aff.Class (class MonadAff, liftAff)
 import Effect.Class (liftEffect)
@@ -15,8 +16,8 @@ import Halogen.HTML as HH
 import Page.Contact as Contact
 import Page.Home as Home
 import Page.Resume as Resume
-import Routing.Duplex (parse)
-import Routing.Hash (getHash)
+import Routing.Duplex (parse, print)
+import Routing.Hash (getHash, setHash)
 import Type.Proxy (Proxy(..))
 
 data Query a = Navigate Route a
@@ -56,7 +57,8 @@ component =
       -- first we'll get the route the user landed on
       initialRoute <- hush <<< (parse routeCodec) <$> liftEffect getHash
       -- then we'll navigate to the new route (also setting the hash)
-      void $ pure $ fromMaybe Home initialRoute
+      _ <- navigate $ fromMaybe Home initialRoute
+      pure unit
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
@@ -76,3 +78,5 @@ component =
         HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
+
+  navigate = liftEffect <<< setHash <<< print Route.routeCodec
