@@ -12,6 +12,7 @@ package:
     - halogen-css
     - maybe
     - prelude
+    - routing
     - routing-duplex
     - web-events
   test:

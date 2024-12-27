@@ -6,7 +6,7 @@ import MyUtils (className)
 component :: forall i p. HH.HTML i p
 component =
   HH.footer
-    [ className "footer fixed-bottom mt-auto py-4 bg-body-tertiary" ]
+    [ className "footer mt-4 py-4 bg-body-tertiary" ]
     [ HH.div
         [ className "container d-flex d-wrap justify-content-center" ]
         [ HH.div_
@@ -16,5 +16,3 @@ component =
             ]
         ]
     ]
-
--- <li class="ms-3"><a class="text-body-secondary" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
