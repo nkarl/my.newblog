@@ -53,11 +53,10 @@ component =
   handleAction :: Action -> H.HalogenM State Action PageSlots Void m Unit
   handleAction = case _ of
     Initialize -> do
-      -- first we'll get the route the user landed on
+      -- NOTE: first we'll get the route the user landed on
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
-      -- then we'll navigate to the new route (also setting the hash)
-      navigate $ fromMaybe Home initialRoute
-      --pure unit
+      -- NOTE: then we'll navigate to the new route (also setting the hash)
+      multiplex $ fromMaybe Home initialRoute
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
@@ -79,4 +78,5 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
-  navigate = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec
+multiplex :: forall m. MonadAff m => Route -> m Unit
+multiplex = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec
