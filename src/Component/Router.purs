@@ -2,17 +2,15 @@ module Component.Router where
 
 import Prelude
 
-import Capability.Navigate (class Navigate, navigate)
-import Control.Monad.Trans.Class (lift)
 import Data.Either (hush)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Route (Route(..), routeCodec)
 import Data.Route as Route
-import Effect.Aff (Aff, effectCanceler, makeAff)
-import Effect.Aff.Class (class MonadAff, liftAff)
+import Effect.Aff.Class (class MonadAff)
 import Effect.Class (liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
+import Page.Articles as Articles
 import Page.Contact as Contact
 import Page.Home as Home
 import Page.Resume as Resume
@@ -32,6 +30,7 @@ data Action = Initialize
 
 type PageSlots =
   ( home :: OpaqueSlot Unit
+  , articles :: OpaqueSlot Unit
   , resume :: OpaqueSlot Unit
   , contact :: OpaqueSlot Unit
   )
@@ -63,7 +62,6 @@ component =
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
     Navigate dest a -> do
-      --{ route } <- H.get
       H.modify_ _ { route = Just dest }
       pure (Just a)
 
@@ -72,6 +70,8 @@ component =
     Just r -> case r of
       Home ->
         HH.slot_ (Proxy :: _ "home") unit Home.component unit
+      Articles ->
+        HH.slot_ (Proxy :: _ "articles") unit Articles.component unit
       Resume ->
         HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
       Contact ->

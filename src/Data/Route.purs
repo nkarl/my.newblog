@@ -9,6 +9,7 @@ import Routing.Duplex.Generic.Syntax ((/))
 
 data Route
   = Home
+  | Articles
   | Resume
   | Contact
 
@@ -19,6 +20,7 @@ derive instance ordRoute :: Ord Route
 routeCodec :: RouteDuplex' Route
 routeCodec = root $ sum
   { "Home": noArgs
+  , "Articles": "articles" / noArgs -- TODO: implement dynamic routing for unique articles
   , "Resume": "resume" / noArgs
   , "Contact": "contact" / noArgs
   }

@@ -2,7 +2,6 @@ module Main where
 
 import Prelude
 
-import Component.Header as Header
 import Component.Router as Router
 import Data.Maybe (Maybe(..))
 import Data.Route (routeCodec)
@@ -11,7 +10,6 @@ import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Halogen as H
 import Halogen.Aff as HA
-import Halogen.HTML.Properties as HP
 import Halogen.VDom.Driver (runUI)
 import Routing.Duplex (parse)
 import Routing.Hash (matchesWith)
