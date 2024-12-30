@@ -14,7 +14,7 @@ import Page.Articles as Articles
 import Page.Contact as Contact
 import Page.Home as Home
 import Page.Resume as Resume
-import Routing.Duplex (parse, print)
+import Routing.Duplex as RouteDuplex
 import Routing.Hash (getHash, setHash)
 import Type.Proxy (Proxy(..))
 
@@ -54,10 +54,10 @@ component =
   handleAction = case _ of
     Initialize -> do
       -- first we'll get the route the user landed on
-      initialRoute <- hush <<< (parse routeCodec) <$> liftEffect getHash
+      initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
       -- then we'll navigate to the new route (also setting the hash)
-      _ <- navigate $ fromMaybe Home initialRoute
-      pure unit
+      navigate $ fromMaybe Home initialRoute
+      --pure unit
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
@@ -79,4 +79,4 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
-  navigate = liftEffect <<< setHash <<< print Route.routeCodec
+  navigate = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec

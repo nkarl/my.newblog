@@ -1,9 +1,13 @@
 module Component.Header where
 
+import Prelude
+
+import Data.Route (Route(..), routeCodec)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
 import MyUtils (className)
+import Routing.Duplex (print)
 
 component :: forall i p. HH.HTML i p
 component =
@@ -21,9 +25,22 @@ component =
         , HH.form [ className "d-flex" ]
             [ HH.div [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
                 [ HH.ul [ className "navbar-nav me-auto mb-2 mb-lg-0" ]
-                    [ HH.li [ className "nav-item" ] [ HH.a [ className "nav-link active", HP.href "#" ] [ HH.text "ARTICLES" ] ]
-                    , HH.li [ className "nav-item" ] [ HH.a [ className "nav-link", HP.href "#" ] [ HH.text "RESUME" ] ]
-                    , HH.li [ className "nav-item" ] [ HH.a [ className "nav-link", HP.href "#" ] [ HH.text "CONTACT" ] ]
+                    [ HH.li [ className "nav-item" ]
+                        [ HH.a
+                            [ className "nav-link active", HP.href $ safeHref Articles
+                            ]
+                            [ HH.text "ARTICLES" ]
+                        ]
+                    , HH.li [ className "nav-item" ]
+                        [ HH.a
+                            [ className "nav-link", HP.href $ safeHref Resume ]
+                            [ HH.text "RESUME" ]
+                        ]
+                    , HH.li [ className "nav-item" ]
+                        [ HH.a
+                            [ className "nav-link", HP.href $ safeHref Contact ]
+                            [ HH.text "CONTACT" ]
+                        ]
                     ]
                 ]
             , HH.input [ className "form-control me-2", HP.placeholder "type to search..." ]
@@ -31,3 +48,5 @@ component =
             ]
         ]
     ]
+  where
+  safeHref = append "#" <<< print routeCodec
