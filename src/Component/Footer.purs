@@ -10,7 +10,8 @@ component =
     [ HH.div
         [ className "container d-flex d-wrap justify-content-center" ]
         [ HH.div_
-            [ HH.span [ className "mb-3 mb-md-0 text-body-secondary" ]
+            [ HH.span
+                [ className "mb-3 mb-md-0 text-body-secondary" ]
                 [ HH.text "© 2025 Charles Lambert Nguyen. All rights reserved."
                 ]
             ]

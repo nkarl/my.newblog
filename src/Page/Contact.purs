@@ -27,11 +27,24 @@ component =
 
 placeholder :: forall i p. HH.HTML i p
 placeholder =
-  HH.div
-    [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
-    [ HH.div [ className "container card-body my-5 min-vh-80" ]
-        [ HH.h1
-            [ HP.style "text-align:center" ]
-            [ HH.text "Contact" ]
+  HH.div_
+    [ HH.div
+        [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
+        [ HH.div
+            [ className "container card-body my-5" ]
+            [ HH.h1
+                [ HP.style "text-align:center" ]
+                [ HH.text "This is the Contact page."
+                ]
+            ]
+        ]
+    , HH.div
+        [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
+        [ HH.div
+            [ className "container card-body my-5 min-vh-100" ]
+            [ HH.h2
+                [ HP.style "text-align:center" ]
+                [ HH.text "It should display a list of contact details." ]
+            ]
         ]
     ]

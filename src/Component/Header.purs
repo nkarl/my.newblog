@@ -11,10 +11,22 @@ import Routing.Duplex (print)
 
 component :: forall i p. HH.HTML i p
 component =
-  HH.nav [ className "navbar navbar-expand-lg bg-body-tertiary" ]
-    [ HH.div [ className "container-fluid" ]
-        [ HH.a [ className "navbar-brand", HP.style "display:inline-flex", HP.href "#" ] [ HH.div [ HP.style "margin-right:0.5em" ] [ HH.text "KARL'S" ], HH.text "BLOG" ]
-        , HH.button [ className "navbar-toggler", HP.type_ HP.ButtonButton ]
+  HH.nav
+    [ className "navbar navbar-expand-lg bg-body-tertiary" ]
+    [ HH.div
+        [ className "container-fluid" ]
+        [ HH.a
+            [ className "navbar-brand"
+            , HP.style "display:inline-flex"
+            , HP.href $ makePath Home
+            ]
+            [ HH.div
+                [ HP.style "margin-right:0.5em" ]
+                [ HH.text "KARL'S" ]
+            , HH.text "BLOG"
+            ]
+        , HH.button
+            [ className "navbar-toggler", HP.type_ HP.ButtonButton ]
             [ HH.span
                 [ className "navbar-toggle-icon"
                 , HP.attr (H.AttrName "data-bs-toggle") "collapse"
@@ -22,31 +34,39 @@ component =
                 ]
                 []
             ]
-        , HH.form [ className "d-flex" ]
-            [ HH.div [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
-                [ HH.ul [ className "navbar-nav me-auto mb-2 mb-lg-0" ]
-                    [ HH.li [ className "nav-item" ]
+        , HH.form
+            [ className "d-flex" ]
+            [ HH.div
+                [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
+                [ HH.ul
+                    [ className "navbar-nav me-auto mb-2 mb-lg-0" ]
+                    [ HH.li
+                        [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link active", HP.href $ safeHref Articles
-                            ]
+                            [ className "nav-link active", HP.href $ makePath Articles ]
                             [ HH.text "ARTICLES" ]
                         ]
-                    , HH.li [ className "nav-item" ]
+                    , HH.li
+                        [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link", HP.href $ safeHref Resume ]
+                            [ className "nav-link", HP.href $ makePath Resume ]
                             [ HH.text "RESUME" ]
                         ]
-                    , HH.li [ className "nav-item" ]
+                    , HH.li
+                        [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link", HP.href $ safeHref Contact ]
+                            [ className "nav-link", HP.href $ makePath Contact ]
                             [ HH.text "CONTACT" ]
                         ]
                     ]
                 ]
-            , HH.input [ className "form-control me-2", HP.placeholder "type to search..." ]
-            , HH.button [ className "btn btn-outline-success", HP.type_ HP.ButtonSubmit ] [ HH.text "Search" ]
+            , HH.input
+                [ className "form-control me-2", HP.placeholder "type to search..." ]
+            , HH.button
+                [ className "btn btn-outline-success", HP.type_ HP.ButtonSubmit ]
+                [ HH.text "Search" ]
             ]
         ]
     ]
   where
-  safeHref = append "#" <<< print routeCodec
+  makePath = append "#" <<< print routeCodec

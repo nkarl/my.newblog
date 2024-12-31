@@ -43,7 +43,8 @@ placeholder =
         ]
     , HH.div
         [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
-        [ HH.div [ className "container card-body my-5 min-vh-100" ]
+        [ HH.h2
+            [ className "container card-body my-5 min-vh-100" ]
             [ HH.p
                 [ HP.style "text-align:center" ]
                 [ HH.text "It should display a list of articles."
