@@ -61,10 +61,14 @@ component =
                     ]
                 ]
             , HH.input
-                [ className "form-control me-2", HP.placeholder "type to search..." ]
+                [ className "form-control me-2 ms-3 fst-italic fs-5"
+                , HP.placeholder "Type to search. . ."
+                ]
             , HH.button
-                [ className "btn btn-outline-success", HP.type_ HP.ButtonSubmit ]
-                [ HH.text "Search" ]
+                [ className "btn btn-outline-success"
+                , HP.type_ HP.ButtonSubmit
+                ]
+                [ HH.text "SEARCH" ]
             ]
         ]
     ]
