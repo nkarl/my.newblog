@@ -9,6 +9,10 @@
 - [ ] Set up IO functions to
     - [ ] retrieve content from Firebase URL, and
     - [ ] show in Markdown componenent
+        - use `purescript-html-parser-halogen` package and render the HTML string as `Halogen.HTML`
+        - References:
+            - https://libraries.io/bower/purescript-html-parser-halogen
+            - https://github.com/naglalakk/purescript-halogen-rawhtml
 
 ```mermaid
 graph LR
