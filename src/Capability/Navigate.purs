@@ -11,5 +11,7 @@ import Halogen (HalogenM)
 class Monad m <= Navigate m where
   navigate :: Route -> m Unit
 
-instance navigateHalogenM :: Navigate m => Navigate (HalogenM state action slots msg m) where
+-- NOTE: why do I need this here?
+instance navigateHalogenM :: Navigate m => Navigate (HalogenM
+  state action slots msg m) where
   navigate = lift <<< navigate

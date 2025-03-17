@@ -2,12 +2,14 @@ module Main where
 
 import Prelude
 
+import Capability.TransformArticles as TransArc
 import Component.Router as Router
 import Data.Maybe (Maybe(..))
 import Data.Route (routeCodec)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
+import Effect.Class.Console (log)
 import Halogen as H
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
@@ -18,8 +20,21 @@ main :: Effect Unit
 main =
   HA.runHalogenAff do
     body <- HA.awaitBody
-    halogenIO <- runUI Router.component unit body
+    hIO <- runUI Router.component unit body
+    let testMdContent = "# Heading 1\n## Heading 2\nHello, world!"
 
-    void $ liftEffect $ (parse routeCodec) `matchesWith` \old new ->
-      when (old /= Just new) $ launchAff_ do
-        void $ halogenIO.query $ H.mkTell $ Router.Navigate new
+    content <- TransArc.transformMarkdown testMdContent
+    --log $ show content
+
+    void $ liftEffect $ do
+      let
+        route = parse routeCodec
+        navigateToPath old new = when (old /= Just new)
+          $ launchAff_
+          $ void
+          $ hIO.query
+          $ H.mkTell
+          $ Router.Navigate new
+      matchesWith
+        route
+        navigateToPath

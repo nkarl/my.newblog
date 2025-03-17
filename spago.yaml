@@ -5,11 +5,13 @@ package:
     - affjax
     - affjax-web
     - console
+    - debug
     - effect
     - either
     - halogen
     - halogen-bootstrap5
     - halogen-css
+    - js-promise-aff
     - maybe
     - prelude
     - routing

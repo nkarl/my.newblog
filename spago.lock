@@ -9,11 +9,13 @@
             "affjax",
             "affjax-web",
             "console",
+            "debug",
             "effect",
             "either",
             "halogen",
             "halogen-bootstrap5",
             "halogen-css",
+            "js-promise-aff",
             "maybe",
             "prelude",
             "routing",
@@ -38,6 +40,7 @@
             "control",
             "css",
             "datetime",
+            "debug",
             "distributive",
             "dom-indexed",
             "effect",
@@ -66,6 +69,7 @@
             "invariant",
             "js-date",
             "js-promise",
+            "js-promise-aff",
             "js-uri",
             "lazy",
             "lcg",
@@ -879,6 +883,15 @@
         "tuples"
       ]
     },
+    "debug": {
+      "type": "registry",
+      "version": "6.0.2",
+      "integrity": "sha256-vmkYFuXYuELBzeauvgHG6E6Kf/Hp1dAnxwE9ByHfwSg=",
+      "dependencies": [
+        "functions",
+        "prelude"
+      ]
+    },
     "distributive": {
       "type": "registry",
       "version": "6.0.0",
@@ -1251,6 +1264,16 @@
         "functions",
         "maybe",
         "prelude"
+      ]
+    },
+    "js-promise-aff": {
+      "type": "registry",
+      "version": "1.0.0",
+      "integrity": "sha256-s9kml9Ei74hKlMMg41yyZp4GkbmYUwaH+gBWWrdhwec=",
+      "dependencies": [
+        "aff",
+        "foreign",
+        "js-promise"
       ]
     },
     "js-uri": {

@@ -53,15 +53,15 @@ component =
   handleAction :: Action -> H.HalogenM State Action PageSlots Void m Unit
   handleAction = case _ of
     Initialize -> do
-      -- NOTE: first we'll get the route the user landed on
+      -- NOTE: 1. gets the route the user landed on
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
-      -- NOTE: then we'll navigate to the new route (also setting the hash)
-      multiplex $ fromMaybe Home initialRoute
+      -- NOTE: 2. navigates to the new route (also sets the hash in the browser location box)
+      navigate $ fromMaybe Home initialRoute
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
-    Navigate dest a -> do
-      H.modify_ _ { route = Just dest }
+    Navigate destination a -> do
+      H.modify_ _ { route = Just destination }
       pure (Just a)
 
   render :: forall a. State -> H.ComponentHTML a PageSlots m
@@ -78,5 +78,5 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
-multiplex :: forall m. MonadAff m => Route -> m Unit
-multiplex = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec
+navigate :: forall m. MonadAff m => Route -> m Unit
+navigate = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec
