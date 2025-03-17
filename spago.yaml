@@ -16,6 +16,7 @@ package:
     - prelude
     - routing
     - routing-duplex
+    - transformers
     - web-events
   test:
     main: Test.Main

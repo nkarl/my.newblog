@@ -14,9 +14,7 @@
     "license": "ISC",
     "description": "this is my blog.",
     "dependencies": {
-        "esbuild": "^0.25.1"
-    },
-    "externals": {
+        "esbuild": "^0.25.1",
         "@wcj/markdown-to-html": "^3.0.4"
     }
 }

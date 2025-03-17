@@ -20,6 +20,7 @@
             "prelude",
             "routing",
             "routing-duplex",
+            "transformers",
             "web-events"
           ],
           "build_plan": [

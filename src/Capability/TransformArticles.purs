@@ -7,8 +7,8 @@ import Effect.Aff (Aff)
 import Promise (Promise)
 import Promise.Aff as PromiseAff
 
-foreign import transformMarkdownImpl
+foreign import convertMarkdownImpl
   :: String -> Effect (Promise String)
 
-transformMarkdown :: String -> Aff (String)
-transformMarkdown = transformMarkdownImpl >>> PromiseAff.toAffE
+convertMarkdown :: String -> Aff (String)
+convertMarkdown = convertMarkdownImpl >>> PromiseAff.toAffE

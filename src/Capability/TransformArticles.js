@@ -1,8 +1,8 @@
-import '@wcj/markdown-to-html';
+import markdown from '@wcj/markdown-to-html';
 
-function transformMarkdownImpl(input) {
+function convertMarkdownImpl(input) {
   var content = (async () => {
-    return await transformer(input);
+    return markdown(input);
   })();
 
   return function() {
@@ -11,5 +11,5 @@ function transformMarkdownImpl(input) {
 }
 
 export {
-  transformMarkdownImpl
+  convertMarkdownImpl
 }

@@ -23,8 +23,8 @@ main =
     hIO <- runUI Router.component unit body
     let testMdContent = "# Heading 1\n## Heading 2\nHello, world!"
 
-    content <- TransArc.transformMarkdown testMdContent
-    --log $ show content
+    content <- TransArc.convertMarkdown testMdContent
+    log $ show content
 
     void $ liftEffect $ do
       let
