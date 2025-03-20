@@ -4,10 +4,12 @@ package:
     - aff
     - affjax
     - affjax-web
+    - argonaut
     - console
     - debug
     - effect
     - either
+    - foreign-object
     - halogen
     - halogen-bootstrap5
     - halogen-css
@@ -18,6 +20,7 @@ package:
     - routing-duplex
     - transformers
     - web-events
+    - web-html
   test:
     main: Test.Main
     dependencies: []
