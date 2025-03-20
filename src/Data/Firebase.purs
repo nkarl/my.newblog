@@ -1,48 +1,33 @@
-module Data.Firebase where
+module Firebase where
 
 import Prelude
-
-import Affjax as AX
+import Affjax.Web as AXWeb
 import Affjax.ResponseFormat as AXRF
-import Control.Monad.Except (runExcept)
-import Data.Bifunctor (lmap)
-import Data.Either (Either(..), hush)
-import Data.HTTP.Method (Method(..))
-import Data.Maybe (Maybe(..))
-import Data.Post (Post)
+import Data.Either (Either(..))
 import Effect.Aff (Aff)
 import Foreign.Object as FO
+import Data.Post (Post)
 
-import Data.Argonaut.Core (Json)
-import Data.Argonaut as Argonaut
-import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:), (.:?))
-import Data.Argonaut.Decode.Combinators (defaultField)
-import Data.Argonaut.Decode.Decoders (decodeForeignObject, decodeJObject)
-
-derive instance Generic Post _
+import Data.Argonaut.Decode (decodeJson)
+import Data.Argonaut.Decode.Error (printJsonDecodeError)
 
 firebaseUrl :: String
 firebaseUrl = "https://blogpost-database-default-rtdb.firebaseio.com/posts.json"
 
-fetchPosts :: Aff (Either String Post)
+fetchPosts :: Aff (Either String (FO.Object Post))
 fetchPosts = do
-  result <- AX.request
-    ( AX.defaultRequest
-        { url = firebaseUrl
-        , method = Left GET
-        , responseFormat = AXRF.json
-        }
-    )
+  result <- AXWeb.get AXRF.json firebaseUrl
   case result of
-    Left err -> pure $ Left $ AX.printError err
-    Right response -> do
-      let decoded = decodePost response
-      pure decoded
+    Left err -> pure $ Left $ AXWeb.printError err
+    Right response -> case decodeJson response.body of
+      Left err -> pure $ Left $ "JSON decode error: " <> printJsonDecodeError err
+      Right posts -> pure $ Right posts
 
--- TODO: switch to using Argonaut to decode JSON strings
--- https://book.purescript.org/chapter10.html
-decodePost :: Json -> Either String Post
-decodePost json = do
-  jsonString <- lmap ("No String in local storage: " <> _) $ Argonaut.decodeJson json
-  jsonPost <- Argonaut.jsonParser jsonString
-  pure ?_
+fetchPost :: String -> Aff (Either String Post)
+fetchPost postId = do
+  result <- AXWeb.get AXRF.json (firebaseUrl <> "/" <> postId <> ".json")
+  case result of
+    Left err -> pure $ Left $ AXWeb.printError err
+    Right response -> case decodeJson response.body of
+      Left err -> pure $ Left $ "JSON decode error: " <> printJsonDecodeError err
+      Right post -> pure $ Right post

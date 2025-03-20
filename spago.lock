@@ -8,7 +8,8 @@
             "aff",
             "affjax",
             "affjax-web",
-            "argonaut",
+            "argonaut-codecs",
+            "argonaut-core",
             "console",
             "debug",
             "effect",
@@ -30,10 +31,8 @@
             "aff",
             "affjax",
             "affjax-web",
-            "argonaut",
             "argonaut-codecs",
             "argonaut-core",
-            "argonaut-traversals",
             "arraybuffer-types",
             "arrays",
             "assert",
@@ -94,7 +93,6 @@
             "partial",
             "prelude",
             "profunctor",
-            "profunctor-lenses",
             "quickcheck",
             "quickcheck-laws",
             "random",
@@ -706,16 +704,6 @@
         "prelude"
       ]
     },
-    "argonaut": {
-      "type": "registry",
-      "version": "9.0.0",
-      "integrity": "sha256-9sHzkzcFkaMUa9+3FjIybJDYnHtY4Jp4zHOJ84qPTXo=",
-      "dependencies": [
-        "argonaut-codecs",
-        "argonaut-core",
-        "argonaut-traversals"
-      ]
-    },
     "argonaut-codecs": {
       "type": "registry",
       "version": "9.1.0",
@@ -750,16 +738,6 @@
         "prelude",
         "strings",
         "tailrec"
-      ]
-    },
-    "argonaut-traversals": {
-      "type": "registry",
-      "version": "10.0.0",
-      "integrity": "sha256-9nSfqR70rjiNWVVsCoK+jrm9dmyZTx89IKNYO6uNUIk=",
-      "dependencies": [
-        "argonaut-codecs",
-        "argonaut-core",
-        "profunctor-lenses"
       ]
     },
     "arraybuffer-types": {
@@ -1513,33 +1491,6 @@
         "invariant",
         "newtype",
         "prelude",
-        "tuples"
-      ]
-    },
-    "profunctor-lenses": {
-      "type": "registry",
-      "version": "8.0.0",
-      "integrity": "sha256-K7f29rHRHgVSb2Y/PaSKtfYPriP6n87BJNO7EhsZHas=",
-      "dependencies": [
-        "arrays",
-        "bifunctors",
-        "const",
-        "control",
-        "distributive",
-        "either",
-        "foldable-traversable",
-        "foreign-object",
-        "functors",
-        "identity",
-        "lists",
-        "maybe",
-        "newtype",
-        "ordered-collections",
-        "partial",
-        "prelude",
-        "profunctor",
-        "record",
-        "transformers",
         "tuples"
       ]
     },

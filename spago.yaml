@@ -4,7 +4,8 @@ package:
     - aff
     - affjax
     - affjax-web
-    - argonaut
+    - argonaut-codecs
+    - argonaut-core
     - console
     - debug
     - effect

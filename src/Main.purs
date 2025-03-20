@@ -4,6 +4,7 @@ import Prelude
 
 import Capability.TransformArticles as TransArc
 import Component.Router as Router
+import Component.PostList as PostList
 import Data.Maybe (Maybe(..))
 import Data.Route (routeCodec)
 import Effect (Effect)
@@ -20,7 +21,8 @@ main :: Effect Unit
 main =
   HA.runHalogenAff do
     body <- HA.awaitBody
-    hIO <- runUI Router.component unit body
+    --hIO <- runUI Router.component unit body
+    hIO <- runUI PostList.component unit body
 
     let testMdContent = "# Heading 1\n## Heading 2\nHello, world!"
     content <- TransArc.convertMarkdown testMdContent
