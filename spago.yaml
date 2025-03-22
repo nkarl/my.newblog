@@ -7,10 +7,12 @@ package:
     - argonaut-codecs
     - argonaut-core
     - console
+    - datetime
     - debug
     - effect
     - either
     - foreign-object
+    - formatters
     - halogen
     - halogen-bootstrap5
     - halogen-css
