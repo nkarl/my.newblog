@@ -2,18 +2,15 @@ module Component.Router where
 
 import Prelude
 
+import Component.PostList as PostList
+import Component.PostDetail as PostDetail
 import Data.Either (hush)
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.Route (Route(..), routeCodec)
-import Data.Route as Route
 import Effect.Aff.Class (class MonadAff)
 import Effect.Class (liftEffect)
-
 import Halogen as H
 import Halogen.HTML as HH
---import Html.Renderer.Halogen as RH
-
-import Page.Articles as Articles
 import Page.Contact as Contact
 import Page.Home as Home
 import Page.Resume as Resume
@@ -29,11 +26,14 @@ type State =
   { route :: Maybe Route
   }
 
-data Action = Initialize
+data Action
+  = Initialize
+  | HandlePostListOutput PostList.Output
 
 type PageSlots =
   ( home :: OpaqueSlot Unit
-  , articles :: OpaqueSlot Unit
+  , postList :: H.Slot PostList.Query PostList.Output Unit
+  , postDetail :: OpaqueSlot String
   , resume :: OpaqueSlot Unit
   , contact :: OpaqueSlot Unit
   )
@@ -56,10 +56,11 @@ component =
   handleAction :: Action -> H.HalogenM State Action PageSlots Void m Unit
   handleAction = case _ of
     Initialize -> do
-      -- NOTE: 1. gets the route the user landed on
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
-      -- NOTE: 2. navigates to the new route (also sets the hash in the browser location box)
       navigate $ fromMaybe Home initialRoute
+    HandlePostListOutput output -> case output of
+      PostList.None -> pure unit
+      PostList.Navigate route -> navigate route
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
@@ -67,13 +68,16 @@ component =
       H.modify_ _ { route = Just destination }
       pure (Just a)
 
-  render :: forall a. State -> H.ComponentHTML a PageSlots m
+  -- Explicitly set Action type to match Component.Router's Action
+  render :: State -> H.ComponentHTML Action PageSlots m
   render { route } = case route of
     Just r -> case r of
       Home ->
         HH.slot_ (Proxy :: _ "home") unit Home.component unit
       Articles ->
-        HH.slot_ (Proxy :: _ "articles") unit Articles.component unit
+        HH.slot (Proxy :: _ "postList") unit PostList.component unit HandlePostListOutput
+      Article id ->
+        HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
       Resume ->
         HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
       Contact ->
@@ -81,5 +85,7 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
-navigate :: forall m. MonadAff m => Route -> m Unit
-navigate = liftEffect <<< setHash <<< RouteDuplex.print Route.routeCodec
+navigate :: forall m. MonadAff m => Route -> H.HalogenM State Action PageSlots Void m Unit
+navigate route = do
+  H.modify_ _ { route = Just route }
+  H.liftEffect $ setHash $ RouteDuplex.print routeCodec route

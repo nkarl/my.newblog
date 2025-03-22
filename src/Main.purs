@@ -22,11 +22,6 @@ main =
   HA.runHalogenAff do
     body <- HA.awaitBody
     hIO <- runUI Router.component unit body
-    --hIO <- runUI PostList.component unit body
-
-    let testMdContent = "# Heading 1\n## Heading 2\nHello, world!"
-    content <- TransArc.convertMarkdown testMdContent
-    log $ show content
 
     void $ liftEffect $ do
       let
