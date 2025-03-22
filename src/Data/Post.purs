@@ -1,11 +1,11 @@
-module Data.Post where
+module Data.PostData where
 
 import Prelude
 
 import Data.Argonaut.Decode (class DecodeJson, decodeJson, (.:), (.:?))
 import Data.Maybe (Maybe(..))
 
-newtype Post = Post
+newtype PostData = PostData
   { content :: String
   , createdAt :: Number
   , description :: String
@@ -15,9 +15,9 @@ newtype Post = Post
   , type :: Maybe String
   }
 
-derive instance eqPost :: Eq Post
+derive instance eqPost :: Eq PostData
 
-instance decodeJsonPost :: DecodeJson Post where
+instance decodeJsonPost :: DecodeJson PostData where
   decodeJson json = do
     obj <- decodeJson json
     id <- obj .: "id"
@@ -28,7 +28,7 @@ instance decodeJsonPost :: DecodeJson Post where
     type_ <- obj .:? "type"
     createdAt <- obj .: "createdAt"
     pure
-      $ Post
+      $ PostData
           { id
           , content
           , title

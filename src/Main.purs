@@ -2,15 +2,12 @@ module Main where
 
 import Prelude
 
-import Capability.TransformArticles as TransArc
 import Component.Router as Router
-import Component.PostList as PostList
 import Data.Maybe (Maybe(..))
 import Data.Route (routeCodec)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
-import Effect.Class.Console (log)
 import Halogen as H
 import Halogen.Aff as HA
 import Halogen.VDom.Driver (runUI)
@@ -20,18 +17,19 @@ import Routing.Hash (matchesWith)
 main :: Effect Unit
 main =
   HA.runHalogenAff do
-    body <- HA.awaitBody
-    hIO <- runUI Router.component unit body
-
-    void $ liftEffect $ do
-      let
-        route = parse routeCodec
-        navigateToPath old new = when (old /= Just new)
+    documentBody <- HA.awaitBody
+    routerComponent <- runUI Router.component unit documentBody
+    let
+      route = parse routeCodec
+      -- listen to any Router.Navigate query
+      routeQuery = routerComponent.query <<< H.mkTell <<< Router.Navigate
+      -- set the destination hash
+      destination current next =
+        when (current /= Just next)
           $ launchAff_
           $ void
-          $ hIO.query
-          $ H.mkTell
-          $ Router.Navigate new
-      matchesWith
-        route
-        navigateToPath
+          $ routeQuery next
+    -- match route with destination
+    void
+      $ liftEffect
+      $ route `matchesWith` destination

@@ -2,7 +2,7 @@ module Component.Header where
 
 import Prelude
 
-import Data.Route (Route(..), routeCodec)
+import Data.Route  as Route  -- (Route(..), routeCodec)
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -18,7 +18,7 @@ component =
         [ HH.a
             [ className "navbar-brand"
             , HP.style "display:inline-flex"
-            , HP.href $ makePath Home
+            , HP.href $ makeLocationHash Route.Home
             ]
             [ HH.div
                 [ HP.style "margin-right:0.5em" ]
@@ -43,19 +43,19 @@ component =
                     [ HH.li
                         [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link active", HP.href $ makePath Articles ]
+                            [ className "nav-link active", HP.href $ makeLocationHash Route.Articles ]
                             [ HH.text "ARTICLES" ]
                         ]
                     , HH.li
                         [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link", HP.href $ makePath Resume ]
+                            [ className "nav-link", HP.href $ makeLocationHash Route.Resume ]
                             [ HH.text "RESUME" ]
                         ]
                     , HH.li
                         [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link", HP.href $ makePath Contact ]
+                            [ className "nav-link", HP.href $ makeLocationHash Route.Contact ]
                             [ HH.text "CONTACT" ]
                         ]
                     ]
@@ -72,5 +72,7 @@ component =
             ]
         ]
     ]
-  where
-  makePath = append "#" <<< print routeCodec
+
+-- | make a path by converting a Route into a String
+makeLocationHash :: Route.Route -> String
+makeLocationHash = append "#" <<< print Route.routeCodec

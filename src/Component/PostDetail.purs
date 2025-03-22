@@ -7,12 +7,12 @@ import Effect.Aff.Class (class MonadAff)
 import Firebase (fetchPostById)
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
-import Data.Post (Post(..))
+import Data.PostData (PostData(..))
 import Effect.Class.Console (log) -- Add this
+import MyUtils (className)
 
 type State =
-  { post :: Maybe Post
+  { post :: Maybe PostData
   , error :: Maybe String
   , postId :: String
   }
@@ -27,41 +27,55 @@ component =
     , eval: H.mkEval $ H.defaultEval { handleAction = handleAction, initialize = Just Initialize }
     }
 
-initialState :: String -> State
-initialState postId =
-  { post: Nothing
-  , error: Nothing
-  , postId
-  }
+  where
+  initialState :: String -> State
+  initialState postId =
+    { post: Nothing
+    , error: Nothing
+    , postId
+    }
+
+  handleAction :: MonadAff m => Action -> H.HalogenM State Action () Void m Unit
+  handleAction Initialize = do
+    H.liftEffect $ log "Initializing PostDetail" -- Add this
+    state <- H.get
+    result <- H.liftAff $ fetchPostById state.postId
+    case result of
+      Left err -> H.modify_ \st -> st { error = Just err }
+      Right post -> H.modify_ \st -> st { post = Just post }
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
-  HH.div [ HP.class_ (H.ClassName "post-detail container") ]
-    [ HH.text "Rendering PostDetail" -- Add this
-    , case state.error, state.post of
-        Just err, _ -> HH.div_ [ HH.text $ "Error: " <> err ]
-        _, Nothing -> HH.div_ [ HH.text $ "Loading post " <> state.postId <> "..." ]
-        _, Just (Post post) ->
-          HH.div_
-            [ HH.h1 [ HP.class_ (H.ClassName "my-4") ] [ HH.text post.title ]
-            , HH.p [ HP.class_ (H.ClassName "text-muted") ]
-                [ HH.text $ "Published: " <> fromMaybe "Unknown" post.pubDate ]
-            , HH.p [ HP.class_ (H.ClassName "lead") ] [ HH.text post.description ]
-            , HH.pre [ HP.class_ (H.ClassName "content") ] [ HH.text post.content ]
-            , HH.p [ HP.class_ (H.ClassName "text-muted") ]
-                [ HH.text $ "ID: " <> post.id ]
-            , HH.p [ HP.class_ (H.ClassName "text-muted") ]
-                [ HH.text $ "Type: " <> fromMaybe "None" post.type ]
-            , HH.p [ HP.class_ (H.ClassName "text-muted") ]
-                [ HH.text $ "Created: " <> show post.createdAt ]
-            ]
-    ]
+  HH.div [ className "post-detail container" ]
+    [ HH.div_ $ case state.error, state.post of
+        Just err, _ ->
+          [ HH.text $ "Error: " <> err ]
 
-handleAction :: forall m. MonadAff m => Action -> H.HalogenM State Action () Void m Unit
-handleAction Initialize = do
-  H.liftEffect $ log "Initializing PostDetail" -- Add this
-  state <- H.get
-  result <- H.liftAff $ fetchPostById state.postId
-  case result of
-    Left err -> H.modify_ \st -> st { error = Just err }
-    Right post -> H.modify_ \st -> st { post = Just post }
+        _, Nothing ->
+          [ HH.text $ "Loading post " <> state.postId <> "..." ]
+
+        _, Just (PostData post) ->
+          [ HH.h1
+              [ className "my-4" ]
+              [ HH.text post.title ]
+          , HH.p
+              [ className "text-muted" ]
+              [ HH.text $ "Published: " <> fromMaybe "Unknown" post.pubDate ]
+          , HH.p
+              [ className "lead" ]
+              [ HH.text $ "Description: " <> post.description ]
+          , HH.p
+              [ className "text-muted" ]
+              [ HH.text $ "ID: " <> post.id ]
+          , HH.p
+              [ className "text-muted" ]
+              [ HH.text $ "Type: " <> fromMaybe "None" post.type ]
+          , HH.p
+              [ className "text-muted" ]
+              [ HH.text $ "Created: " <> show post.createdAt ]
+          -- NOTE: Change style later to display HTML instead of MD in pre / code
+          , HH.pre
+              [ className "content" ]
+              [ HH.text post.content ]
+          ]
+    ]

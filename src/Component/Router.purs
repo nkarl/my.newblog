@@ -58,6 +58,7 @@ component =
     Initialize -> do
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
       navigate $ fromMaybe Home initialRoute
+
     HandlePostListOutput output -> case output of
       PostList.None -> pure unit
       PostList.Navigate route -> navigate route
@@ -68,7 +69,7 @@ component =
       H.modify_ _ { route = Just destination }
       pure (Just a)
 
-  -- Explicitly set Action type to match Component.Router's Action
+  -- multiplex a route to various matching Halogen components
   render :: State -> H.ComponentHTML Action PageSlots m
   render { route } = case route of
     Just r -> case r of
@@ -85,6 +86,7 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
+-- | navigate to the destination by setting the route hash 
 navigate :: forall m. MonadAff m => Route -> H.HalogenM State Action PageSlots Void m Unit
 navigate route = do
   H.modify_ _ { route = Just route }

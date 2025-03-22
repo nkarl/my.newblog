@@ -5,7 +5,7 @@ import Prelude
 import Data.Array (reverse)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromMaybe)
-import Data.Post (Post(..))
+import Data.PostData (PostData(..))
 import Data.Route (Route(..))
 import Effect.Aff.Class (class MonadAff)
 import Firebase (fetchPosts)
@@ -15,8 +15,10 @@ import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
+import MyUtils (className)
+
 type State =
-  { posts :: Maybe (FO.Object Post)
+  { posts :: Maybe (FO.Object PostData)
   , error :: Maybe String
   }
 
@@ -40,26 +42,49 @@ component =
         }
     }
 
+  where
+  handleAction :: MonadAff m => Action -> H.HalogenM State Action () Output m Unit
+  handleAction = case _ of
+    Initialize -> do
+      result <- H.liftAff fetchPosts
+      case result of
+        Left err -> H.modify_ \st -> st { error = Just err }
+        Right posts -> H.modify_ \st -> st { posts = Just posts }
+
+    NavigateToArticle postId -> do
+      H.raise $ Navigate (Article postId)
+
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
-  HH.div [ HP.class_ (H.ClassName "post-list container") ]
+  HH.div [ className "post-list container" ]
     [ case state.error, state.posts of
-        Just err, _ -> HH.div_ [ HH.text $ "Error: " <> err ]
-        _, Nothing -> HH.div_ [ HH.text "Loading posts..." ]
+        Just err, _ ->
+          HH.div_ [ HH.text $ "Error: " <> err ]
+        _, Nothing ->
+          HH.div_ [ HH.text "Loading posts..." ]
         _, Just posts ->
           HH.div_
-            [ HH.div [ HP.class_ (H.ClassName "row fw-bold border-bottom py-2") ]
-                [ HH.div [ HP.class_ (H.ClassName "col-8") ] [ HH.text "Title" ]
-                , HH.div [ HP.class_ (H.ClassName "col-4 text-end") ] [ HH.text "Published" ]
+            [ HH.div
+                [ className "row fw-bold border-bottom py-2" ]
+                [ HH.div
+                    [ className "col-8" ]
+                    [ HH.text "Title" ]
+                , HH.div
+                    [ className "col-4 text-end" ]
+                    [ HH.text "Published" ]
                 ]
-            , HH.div_ $ renderPost <$> reverse (FO.values posts)
+            -- renders the post records as rows
+            , HH.div_ $
+                renderPost <$> reverse (FO.values posts)
             ]
     ]
 
-renderPost :: forall m. Post -> H.ComponentHTML Action () m
-renderPost (Post post) =
-  HH.div [ HP.class_ (H.ClassName "row py-2 border-bottom") ]
-    [ HH.div [ HP.class_ (H.ClassName "col-8") ]
+-- | render a single post as a row with 2 columns, `title` and and `pubDate`
+renderPost :: forall m. PostData -> H.ComponentHTML Action () m
+renderPost (PostData post) =
+  HH.div [ className "row py-2 border-bottom" ]
+    [ HH.div
+        [ className "col-8" ]
         [ HH.h4_
             [ HH.a
                 [ HP.href "#"
@@ -68,15 +93,7 @@ renderPost (Post post) =
                 [ HH.text post.title ]
             ]
         ]
-    , HH.div [ HP.class_ (H.ClassName "col-4 text-end") ] [ HH.text $ fromMaybe "Unknown" post.pubDate ]
+    , HH.div
+        [ className "col-4 text-end" ]
+        [ HH.text $ fromMaybe "Unknown" post.pubDate ]
     ]
-
-handleAction :: forall m. MonadAff m => Action -> H.HalogenM State Action () Output m Unit
-handleAction = case _ of
-  Initialize -> do
-    result <- H.liftAff fetchPosts
-    case result of
-      Left err -> H.modify_ \st -> st { error = Just err }
-      Right posts -> H.modify_ \st -> st { posts = Just posts }
-  NavigateToArticle id -> do
-    H.raise $ Navigate (Article id)
