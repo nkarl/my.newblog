@@ -36,6 +36,7 @@
               pkgs.purs-backend-es
               pkgs.purescript-language-server
               pkgs.spago-unstable
+              pkgs.pnpm
             ]
             ++ (pkgs.lib.optionals (system == "aarch64-darwin")
               (with pkgs.darwin.apple_sdk.frameworks; [
