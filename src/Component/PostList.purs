@@ -49,8 +49,8 @@ render state =
         _, Just posts ->
           HH.div_
             [ HH.div [ HP.class_ (H.ClassName "row fw-bold border-bottom py-2") ]
-                [ HH.div [ HP.class_ (H.ClassName "col-10") ] [ HH.text "Title" ]
-                , HH.div [ HP.class_ (H.ClassName "col-2") ] [ HH.text "Published" ]
+                [ HH.div [ HP.class_ (H.ClassName "col-8") ] [ HH.text "Title" ]
+                , HH.div [ HP.class_ (H.ClassName "col-4 text-end") ] [ HH.text "Published" ]
                 ]
             , HH.div_ $ renderPost <$> reverse (FO.values posts)
             ]
@@ -59,8 +59,8 @@ render state =
 renderPost :: forall m. Post -> H.ComponentHTML Action () m
 renderPost (Post post) =
   HH.div [ HP.class_ (H.ClassName "row py-2 border-bottom") ]
-    [ HH.div [ HP.class_ (H.ClassName "col-10") ]
-        [ HH.h3_
+    [ HH.div [ HP.class_ (H.ClassName "col-8") ]
+        [ HH.h4_
             [ HH.a
                 [ HP.href "#"
                 , HE.onClick \_ -> NavigateToArticle post.id
@@ -68,7 +68,7 @@ renderPost (Post post) =
                 [ HH.text post.title ]
             ]
         ]
-    , HH.div [ HP.class_ (H.ClassName "col-2") ] [ HH.text $ fromMaybe "Unknown" post.pubDate ]
+    , HH.div [ HP.class_ (H.ClassName "col-4 text-end") ] [ HH.text $ fromMaybe "Unknown" post.pubDate ]
     ]
 
 handleAction :: forall m. MonadAff m => Action -> H.HalogenM State Action () Output m Unit
