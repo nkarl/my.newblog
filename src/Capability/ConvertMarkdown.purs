@@ -1,4 +1,4 @@
-module Capability.TransformArticles where
+module Capability.ConvertMarkdown where
 
 import Prelude
 

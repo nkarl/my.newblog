@@ -69,7 +69,7 @@ component =
       H.modify_ _ { route = Just destination }
       pure (Just a)
 
-  -- multiplex a route to various matching Halogen components
+  -- render a route with a matching Halogen component
   render :: State -> H.ComponentHTML Action PageSlots m
   render { route } = case route of
     Just r -> case r of
@@ -83,6 +83,7 @@ component =
         HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
       Contact ->
         HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
+
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 

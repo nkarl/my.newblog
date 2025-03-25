@@ -43,6 +43,7 @@ component =
     }
 
   where
+  -- TODO: add pagination
   handleAction :: MonadAff m => Action -> H.HalogenM State Action () Output m Unit
   handleAction = case _ of
     Initialize -> do
@@ -95,5 +96,7 @@ renderPost (PostData post) =
         ]
     , HH.div
         [ className "col-4 text-end" ]
-        [ HH.text $ fromMaybe "Unknown" post.pubDate ]
+        [ HH.pre_
+            [ HH.text $ fromMaybe "Unknown" post.pubDate ]
+        ]
     ]
