@@ -74,8 +74,8 @@ render state =
                     [ className "col-4 text-end" ]
                     [ HH.text "Published" ]
                 ]
-            -- renders the post records as rows
             , HH.div_ $
+                -- NOTE: iterate and render posts as rows
                 renderPost <$> reverse (FO.values posts)
             ]
     ]
@@ -84,6 +84,7 @@ render state =
 renderPost :: forall m. PostData -> H.ComponentHTML Action () m
 renderPost (PostData post) =
   HH.div [ className "row py-2 border-bottom" ]
+    -- first column, span 8
     [ HH.div
         [ className "col-8" ]
         [ HH.h4_
@@ -94,6 +95,7 @@ renderPost (PostData post) =
                 [ HH.text post.title ]
             ]
         ]
+    -- second column, span 4
     , HH.div
         [ className "col-4 text-end" ]
         [ HH.pre_
