@@ -75,9 +75,9 @@ component =
     Just r -> case r of
       Home ->
         HH.slot_ (Proxy :: _ "home") unit Home.component unit
-      Articles ->
+      Posts ->
         HH.slot (Proxy :: _ "postList") unit PostList.component unit HandlePostListOutput
-      Article id ->
+      Post id ->
         HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
       Resume ->
         HH.slot_ (Proxy :: _ "resume") unit Resume.component unit

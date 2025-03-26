@@ -25,7 +25,7 @@ type State =
 data Query a = NoOp a
 data Action
   = Initialize
-  | NavigateToArticle String
+  | NavigateToPost String
 
 data Output
   = None
@@ -52,8 +52,8 @@ component =
         Left err -> H.modify_ \st -> st { error = Just err }
         Right posts -> H.modify_ \st -> st { posts = Just posts }
 
-    NavigateToArticle postId -> do
-      H.raise $ Navigate (Article postId)
+    NavigateToPost postId -> do
+      H.raise $ Navigate (Post postId)
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
@@ -90,7 +90,7 @@ renderPost (PostData post) =
         [ HH.h4_
             [ HH.a
                 [ HP.href "#"
-                , HE.onClick \_ -> NavigateToArticle post.id
+                , HE.onClick \_ -> NavigateToPost post.id
                 ]
                 [ HH.text post.title ]
             ]
