@@ -57,11 +57,11 @@ component =
   handleAction = case _ of
     Initialize -> do
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
-      navigate $ fromMaybe Home initialRoute
+      setHashAndGo $ fromMaybe Home initialRoute
 
     HandlePostListOutput output -> case output of
       PostList.None -> pure unit
-      PostList.Navigate route -> navigate route
+      PostList.Navigate route -> setHashAndGo route
 
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
@@ -75,9 +75,9 @@ component =
     Just r -> case r of
       Home ->
         HH.slot_ (Proxy :: _ "home") unit Home.component unit
-      Posts ->
+      Posts Nothing ->
         HH.slot (Proxy :: _ "postList") unit PostList.component unit HandlePostListOutput
-      Post id ->
+      Posts (Just id) ->
         HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
       Resume ->
         HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
@@ -87,8 +87,8 @@ component =
     Nothing ->
       HH.div_ [ HH.text "Oh no! That page wasn't found." ]
 
--- | navigate to the destination by setting the route hash 
-navigate :: forall m. MonadAff m => Route -> H.HalogenM State Action PageSlots Void m Unit
-navigate route = do
+-- | set the route hash and navigate to the destination
+setHashAndGo :: forall m. MonadAff m => Route -> H.HalogenM State Action PageSlots Void m Unit
+setHashAndGo route = do
   H.modify_ _ { route = Just route }
   H.liftEffect $ setHash $ RouteDuplex.print routeCodec route

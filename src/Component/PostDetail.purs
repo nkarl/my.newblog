@@ -11,6 +11,8 @@ import Data.PostData (PostData(..))
 import Effect.Class.Console (log) -- Add this
 import MyUtils (className)
 
+-- TODO: line 78
+
 type State =
   { post :: Maybe PostData
   , error :: Maybe String
@@ -73,7 +75,7 @@ render state =
           , HH.p
               [ className "text-muted" ]
               [ HH.text $ "Created: " <> show post.createdAt ]
-          -- NOTE: Change style later to display HTML instead of MD in pre / code
+          -- TODO: Change style later to display HTML instead of MD in pre / code
           , HH.pre
               [ className "content" ]
               [ HH.text post.content ]

@@ -53,7 +53,7 @@ component =
         Right posts -> H.modify_ \st -> st { posts = Just posts }
 
     NavigateToPost postId -> do
-      H.raise $ Navigate (Post postId)
+      H.raise $ Navigate (Posts (Just postId))
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =

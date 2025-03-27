@@ -2,7 +2,8 @@ module Component.Header where
 
 import Prelude
 
-import Data.Route  as Route  -- (Route(..), routeCodec)
+import Data.Maybe (Maybe(..))
+import Data.Route as Route
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
@@ -43,7 +44,7 @@ component =
                     [ HH.li
                         [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link active", HP.href $ makeLocationHash Route.Posts ]
+                            [ className "nav-link active", HP.href $ makeLocationHash $ Route.Posts Nothing ]
                             [ HH.text "ARTICLES" ]
                         ]
                     , HH.li
