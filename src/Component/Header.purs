@@ -45,7 +45,7 @@ component =
                         [ className "nav-item" ]
                         [ HH.a
                             [ className "nav-link active", HP.href $ makeLocationHash $ Route.Posts Nothing ]
-                            [ HH.text "ARTICLES" ]
+                            [ HH.text "POSTS" ]
                         ]
                     , HH.li
                         [ className "nav-item" ]

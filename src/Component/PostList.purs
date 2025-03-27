@@ -89,7 +89,7 @@ renderPost (PostData post) =
         [ className "col-8" ]
         [ HH.h4_
             [ HH.a
-                [ HP.href "#"
+                [ HP.href "#/posts"
                 , HE.onClick \_ -> NavigateToPost post.id
                 ]
                 [ HH.text post.title ]
