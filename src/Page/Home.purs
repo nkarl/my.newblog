@@ -23,7 +23,7 @@ component =
 render :: forall s a m. MonadAff m => s -> H.ComponentHTML a ChildSlots m
 render _ =
   HH.div_
-    [ HH.div_ [ Header.component ]
+    [ Header.component
     , HH.slot_ (Proxy :: _ "postList") unit PostList.component unit
-    , HH.div_ [ Footer.component ]
+    , Footer.component
     ]

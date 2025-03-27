@@ -10,6 +10,7 @@ import Routing.Duplex.Generic.Syntax ((/))
 
 data Route
   = Home
+  | Articles (Maybe String)
   | Posts (Maybe String)
   -- | Post String
   | Resume
@@ -22,8 +23,9 @@ derive instance ordRoute :: Ord Route
 routeCodec :: RouteDuplex' Route
 routeCodec = root $ sum
   { "Home": noArgs
+  , "Articles": "articles" / optional segment
   , "Posts": "posts" / optional  segment 
-  --, "Post": "posts" / segment
+  -- , "Post": "posts" / segment
   , "Resume": "resume" / noArgs
   , "Contact": "contact" / noArgs
   }

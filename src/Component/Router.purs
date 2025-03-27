@@ -11,12 +11,14 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Class (liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
-import Page.Contact as Contact
-import Page.Home as Home
-import Page.Resume as Resume
 import Routing.Duplex as RouteDuplex
 import Routing.Hash (getHash, setHash)
 import Type.Proxy (Proxy(..))
+
+import Page.Contact as Contact
+import Page.Home as Home
+import Page.Articles as Articles
+import Page.Resume as Resume
 
 data Query a = Navigate Route a
 
@@ -29,9 +31,12 @@ type State =
 data Action
   = Initialize
   | HandlePostListOutput PostList.Output
+  | HandleArticlesOutput Articles.Output
 
 type PageSlots =
   ( home :: OpaqueSlot Unit
+  --, articles :: OpaqueSlot Unit
+  , articles :: H.Slot Articles.Query Articles.Output Unit
   , postList :: H.Slot PostList.Query PostList.Output Unit
   , postDetail :: OpaqueSlot String
   , resume :: OpaqueSlot Unit
@@ -59,6 +64,10 @@ component =
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
       setHashAndGo $ fromMaybe Home initialRoute
 
+    HandleArticlesOutput output -> case output of
+      Articles.None -> pure unit
+      Articles.Navigate route -> setHashAndGo route
+
     HandlePostListOutput output -> case output of
       PostList.None -> pure unit
       PostList.Navigate route -> setHashAndGo route
@@ -75,6 +84,10 @@ component =
     Just r -> case r of
       Home ->
         HH.slot_ (Proxy :: _ "home") unit Home.component unit
+      Articles Nothing ->
+        HH.slot (Proxy :: _ "articles") unit Articles.component unit HandleArticlesOutput
+      Articles (Just id) ->
+        HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
       Posts Nothing ->
         HH.slot (Proxy :: _ "postList") unit PostList.component unit HandlePostListOutput
       Posts (Just id) ->
