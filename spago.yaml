@@ -26,7 +26,8 @@ package:
     - web-html
   test:
     main: Test.Main
-    dependencies: []
+    dependencies:
+      - assert
 workspace:
   packageSet:
     registry: 60.6.0

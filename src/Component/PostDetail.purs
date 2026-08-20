@@ -4,12 +4,12 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Effect.Aff.Class (class MonadAff)
-import Firebase (fetchPostById)
+import Data.Firebase (fetchPostById)
 import Halogen as H
 import Halogen.HTML as HH
 import Data.PostData (PostData(..))
 import Effect.Class.Console (log) -- Add this
-import MyUtils (className)
+import Utils (className)
 
 -- TODO: line 78
 

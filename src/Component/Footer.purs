@@ -1,7 +1,7 @@
 module Component.Footer where
 
 import Halogen.HTML as HH
-import MyUtils (className)
+import Utils (className)
 
 component :: forall i p. HH.HTML i p
 component =
@@ -12,7 +12,7 @@ component =
         [ HH.div_
             [ HH.span
                 [ className "mb-3 mb-md-0 text-body-secondary" ]
-                [ HH.text "© 2025 Charles Lambert Nguyen. All rights reserved."
+                [ HH.text "© 2026 Charles Lambert Nguyen. All rights reserved."
                 ]
             ]
         ]

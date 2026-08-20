@@ -2,12 +2,11 @@ module Component.Header where
 
 import Prelude
 
-import Data.Maybe (Maybe(..))
 import Data.Route as Route
 import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Properties as HP
-import MyUtils (className)
+import Utils (className)
 import Routing.Duplex (print)
 
 component :: forall i p. HH.HTML i p
@@ -44,7 +43,7 @@ component =
                     [ HH.li
                         [ className "nav-item" ]
                         [ HH.a
-                            [ className "nav-link active", HP.href $ makeLocationHash $ Route.Posts Nothing ]
+                            [ className "nav-link active", HP.href $ makeLocationHash Route.Posts ]
                             [ HH.text "POSTS" ]
                         ]
                     , HH.li
@@ -76,4 +75,4 @@ component =
 
 -- | make a path by converting a Route into a String
 makeLocationHash :: Route.Route -> String
-makeLocationHash = append "#" <<< print Route.routeCodec
+makeLocationHash = ("#" <> _) <<< print Route.routeCodec

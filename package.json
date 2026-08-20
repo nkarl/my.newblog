@@ -2,19 +2,22 @@
     "name": "halogen-new-blog",
     "version": "0.0.1.0",
     "scripts": {
-        "postinstall": "spago install",
-        "clean": "rm -rf node_modules output .spago dist/*.js *.lock .cache",
+        "clean": "rm -rf output .spago dist/*.js .cache",
         "build": "spago build",
         "test": "spago test",
-        "servebak": "spago build && esbuild --bundle index.js --outfile=dist/index.js  --servedir=dist",
         "serve": "spago build && esbuild --bundle index.js --outfile=dist/index.js --servedir=dist",
-        "bundle": "spago bundle --minify --output output-es --outfile dist/index.js"
+        "bundle": "spago build && esbuild --bundle index.js --minify --outfile=dist/index.js"
     },
     "author": "Charles Lambert Nguyen",
     "license": "ISC",
-    "description": "this is my blog.",
+    "description": "A PureScript and Halogen blog.",
+    "packageManager": "pnpm@11.22.0",
     "dependencies": {
-        "esbuild": "^0.25.1",
-        "@wcj/markdown-to-html": "^3.0.4"
+        "@wcj/markdown-to-html": "^3.0.4",
+        "esbuild": "^0.25.1"
+    },
+    "devDependencies": {
+        "purescript": "^0.15.16",
+        "spago": "^1.0.4"
     }
 }

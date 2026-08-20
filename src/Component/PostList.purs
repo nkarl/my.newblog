@@ -2,36 +2,29 @@ module Component.PostList where
 
 import Prelude
 
-import Data.Array (reverse)
+import Data.Array (sortBy)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Data.PostData (PostData(..))
-import Data.Route (Route(..))
+import Data.Route (Route(..), routeCodec)
 import Effect.Aff.Class (class MonadAff)
-import Firebase (fetchPosts)
+import Data.Firebase (fetchPosts)
 import Foreign.Object as FO
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
+import Routing.Duplex as RouteDuplex
 
-import MyUtils (className)
+import Utils (className)
 
 type State =
   { posts :: Maybe (FO.Object PostData)
   , error :: Maybe String
   }
 
-data Query a = NoOp a
-data Action
-  = Initialize
-  | NavigateToPost String
+data Action = Initialize
 
-data Output
-  = None
-  | Navigate Route
-
-component :: forall i m. MonadAff m => H.Component Query i Output m
+component :: forall q i m. MonadAff m => H.Component q i Void m
 component =
   H.mkComponent
     { initialState: \_ -> { posts: Nothing, error: Nothing }
@@ -44,16 +37,13 @@ component =
 
   where
   -- TODO: add pagination
-  handleAction :: MonadAff m => Action -> H.HalogenM State Action () Output m Unit
+  handleAction :: MonadAff m => Action -> H.HalogenM State Action () Void m Unit
   handleAction = case _ of
     Initialize -> do
       result <- H.liftAff fetchPosts
       case result of
         Left err -> H.modify_ \st -> st { error = Just err }
         Right posts -> H.modify_ \st -> st { posts = Just posts }
-
-    NavigateToPost postId -> do
-      H.raise $ Navigate (Posts (Just postId))
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
@@ -76,7 +66,7 @@ render state =
                 ]
             , HH.div_ $
                 -- NOTE: iterate and render posts as rows
-                renderPost <$> reverse (FO.values posts)
+                renderPost <$> sortBy newestFirst (FO.values posts)
             ]
     ]
 
@@ -89,9 +79,7 @@ renderPost (PostData post) =
         [ className "col-8" ]
         [ HH.h4_
             [ HH.a
-                [ HP.href "#/posts"
-                , HE.onClick \_ -> NavigateToPost post.id
-                ]
+                [ HP.href $ "#" <> RouteDuplex.print routeCodec (Post post.id) ]
                 [ HH.text post.title ]
             ]
         ]
@@ -102,3 +90,7 @@ renderPost (PostData post) =
             [ HH.text $ fromMaybe "Unknown" post.pubDate ]
         ]
     ]
+
+newestFirst :: PostData -> PostData -> Ordering
+newestFirst (PostData left) (PostData right) =
+  compare right.createdAt left.createdAt

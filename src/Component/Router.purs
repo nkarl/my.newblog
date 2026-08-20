@@ -2,7 +2,8 @@ module Component.Router where
 
 import Prelude
 
-import Component.PostList as PostList
+import Component.Footer as Footer
+import Component.Header as Header
 import Component.PostDetail as PostDetail
 import Data.Either (hush)
 import Data.Maybe (Maybe(..), fromMaybe)
@@ -17,7 +18,6 @@ import Type.Proxy (Proxy(..))
 
 import Page.Contact as Contact
 import Page.Home as Home
-import Page.Articles as Articles
 import Page.Resume as Resume
 
 data Query a = Navigate Route a
@@ -30,14 +30,9 @@ type State =
 
 data Action
   = Initialize
-  | HandlePostListOutput PostList.Output
-  | HandleArticlesOutput Articles.Output
 
 type PageSlots =
   ( home :: OpaqueSlot Unit
-  --, articles :: OpaqueSlot Unit
-  , articles :: H.Slot Articles.Query Articles.Output Unit
-  , postList :: H.Slot PostList.Query PostList.Output Unit
   , postDetail :: OpaqueSlot String
   , resume :: OpaqueSlot Unit
   , contact :: OpaqueSlot Unit
@@ -64,14 +59,6 @@ component =
       initialRoute <- hush <<< (RouteDuplex.parse routeCodec) <$> liftEffect getHash
       setHashAndGo $ fromMaybe Home initialRoute
 
-    HandleArticlesOutput output -> case output of
-      Articles.None -> pure unit
-      Articles.Navigate route -> setHashAndGo route
-
-    HandlePostListOutput output -> case output of
-      PostList.None -> pure unit
-      PostList.Navigate route -> setHashAndGo route
-
   handleQuery :: forall a. Query a -> H.HalogenM State Action PageSlots Void m (Maybe a)
   handleQuery = case _ of
     Navigate destination a -> do
@@ -80,25 +67,18 @@ component =
 
   -- render a route with a matching Halogen component
   render :: State -> H.ComponentHTML Action PageSlots m
-  render { route } = case route of
-    Just r -> case r of
-      Home ->
-        HH.slot_ (Proxy :: _ "home") unit Home.component unit
-      Articles Nothing ->
-        HH.slot (Proxy :: _ "articles") unit Articles.component unit HandleArticlesOutput
-      Articles (Just id) ->
-        HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
-      Posts Nothing ->
-        HH.slot (Proxy :: _ "postList") unit PostList.component unit HandlePostListOutput
-      Posts (Just id) ->
-        HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
-      Resume ->
-        HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
-      Contact ->
-        HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
-
-    Nothing ->
-      HH.div_ [ HH.text "Oh no! That page wasn't found." ]
+  render { route } =
+    HH.div_
+      [ Header.component
+      , case route of
+          Just Home -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
+          Just Posts -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
+          Just (Post id) -> HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
+          Just Resume -> HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
+          Just Contact -> HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
+          Nothing -> HH.div_ [ HH.text "Oh no! That page wasn't found." ]
+      , Footer.component
+      ]
 
 -- | set the route hash and navigate to the destination
 setHashAndGo :: forall m. MonadAff m => Route -> H.HalogenM State Action PageSlots Void m Unit

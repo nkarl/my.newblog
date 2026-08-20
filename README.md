@@ -1,21 +1,34 @@
-## TODO
+# Karl's Blog
 
-- [ ] Review the source code / git log.
-    - to get a sense of what I was doing last time.
-- [ ] Implement the transformer from Markdown to HTML in IO
-    - [x] Implement the FFI to transform Markdown to HTML
-    - [ ] Implement the Halogen component to show Markdown content
-- [ ] Set up a pipeline for content submit Markdown files to Firebase
-- [ ] Set up IO functions to
-    - [ ] retrieve content from Firebase URL, and
-    - [ ] show in Markdown componenent
-        - use `purescript-html-parser-halogen` package and render the HTML string as `Halogen.HTML`
-        - References:
-            - https://libraries.io/bower/purescript-html-parser-halogen
-            - https://github.com/naglalakk/purescript-halogen-rawhtml
+A blog application built with PureScript, Halogen, Routing.Duplex, and Firebase
+Realtime Database.
 
-```mermaid
-graph LR
-MarkdownString --> HtmlString --> Halogen.PlainHTML
+## Development
+
+Requirements: Node.js 20 or newer and pnpm 11.
+
+```sh
+pnpm install
+pnpm build
+pnpm test
+pnpm serve
 ```
 
+`pnpm serve` builds the PureScript application, bundles it with esbuild, and
+serves `dist/` with rebuilds available by restarting the command.
+
+## Project structure
+
+- `src/Component/Router.purs` owns the application shell and selected page.
+- `src/Data/Route.purs` is the single source of truth for browser routes.
+- `src/Data/Firebase.purs` retrieves post data.
+- `src/Capability/ConvertMarkdown.*` is the Markdown-to-HTML FFI boundary.
+- `src/Page/` contains route-level page components.
+
+## Next steps
+
+- Render converted Markdown in `PostDetail` using sanitized HTML.
+- Move the Firebase URL into environment-specific configuration.
+- Add loading, decoding, and HTTP tests around post retrieval.
+- Replace the public Firebase write rule with authenticated authoring rules
+  before adding a content publishing pipeline.

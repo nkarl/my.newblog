@@ -1,4 +1,4 @@
-module Firebase where
+module Data.Firebase where
 
 import Prelude
 
@@ -13,7 +13,7 @@ import Foreign.Object as FO
 
 -- | the default database location.
 firebaseUrl :: String
-firebaseUrl = "https://blogpost-database-default-rtdb.firebaseio.com/"
+firebaseUrl = "https://blogpost-database-default-rtdb.firebaseio.com"
 
 -- | fetch all posts from Firebase.
 fetchPosts :: Aff (Either String (FO.Object PostData))
