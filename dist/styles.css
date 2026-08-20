@@ -1,0 +1,12 @@
+:root {
+  --bs-body-font-family: "EB Garamond", Georgia, serif;
+  --bs-body-font-size: 1.125rem;
+  --bs-body-line-height: 1.65;
+}
+
+/* Markdown is displayed as source until sanitized HTML rendering is added. */
+.post-content {
+  overflow-x: auto;
+  font: inherit;
+  white-space: pre-wrap;
+}

@@ -47,7 +47,7 @@ component =
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
-  HH.div [ className "post-list container" ]
+  HH.section [ className "col-lg-10 mx-auto" ]
     [ case state.error, state.posts of
         Just err, _ ->
           HH.div_ [ HH.text $ "Error: " <> err ]
@@ -56,12 +56,12 @@ render state =
         _, Just posts ->
           HH.div_
             [ HH.div
-                [ className "row fw-bold border-bottom py-2" ]
+                [ className "row d-none d-sm-flex fw-bold text-body-secondary text-uppercase small border-bottom py-2" ]
                 [ HH.div
-                    [ className "col-8" ]
+                    [ className "col-sm-8" ]
                     [ HH.text "Title" ]
                 , HH.div
-                    [ className "col-4 text-end" ]
+                    [ className "col-sm-4 text-sm-end" ]
                     [ HH.text "Published" ]
                 ]
             , HH.div_ $
@@ -73,22 +73,19 @@ render state =
 -- | render a single post as a row with 2 columns, `title` and and `pubDate`
 renderPost :: forall m. PostData -> H.ComponentHTML Action () m
 renderPost (PostData post) =
-  HH.div [ className "row py-2 border-bottom" ]
-    -- first column, span 8
+  HH.article [ className "row align-items-baseline border-bottom py-3" ]
     [ HH.div
-        [ className "col-8" ]
-        [ HH.h4_
+        [ className "col-12 col-sm-8" ]
+        [ HH.h3
+            [ className "h5 mb-1" ]
             [ HH.a
                 [ HP.href $ "#" <> RouteDuplex.print routeCodec (Post post.id) ]
                 [ HH.text post.title ]
             ]
         ]
-    -- second column, span 4
     , HH.div
-        [ className "col-4 text-end" ]
-        [ HH.pre_
-            [ HH.text $ fromMaybe "Unknown" post.pubDate ]
-        ]
+        [ className "col-12 col-sm-4 text-body-secondary text-sm-end small" ]
+        [ HH.text $ fromMaybe "Unknown" post.pubDate ]
     ]
 
 newestFirst :: PostData -> PostData -> Ordering

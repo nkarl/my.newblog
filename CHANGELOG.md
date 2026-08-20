@@ -8,6 +8,19 @@ them into a dated release section when publishing a release.
 
 ### Changed
 
+- Added `DESIGN.md` as the source of truth for information hierarchy,
+  Bootstrap recipes, responsive conventions, and component ownership.
+- Added a live `/#/design` catalog covering typography, actions, information
+  patterns, and loading/error/empty states.
+- Consolidated layout, spacing, color, responsive, card, and control styling on
+  Bootstrap's constrained component and utility vocabulary.
+- Reduced `dist/styles.css` to global typography and Markdown presentation that
+  Bootstrap does not express directly.
+- Extracted the repeated placeholder-card markup into a reusable PureScript
+  view while keeping its visual configuration in Bootstrap classes.
+- Made post-list rows responsive with Bootstrap's grid and breakpoint tokens.
+- Corrected the Bootstrap navbar structure and moved its toggle and accessibility
+  attributes onto the toggle button.
 - Revived the latest application work on a local `develop` branch tracking
   `origin/implement/routing-for-page-components`.
 - Standardized development on pnpm 11, PureScript 0.15.16, and Spago 1.0.4.

@@ -13,6 +13,7 @@ data Route
   | Post String
   | Resume
   | Contact
+  | Design
 
 derive instance genericRoute :: Generic Route _
 derive instance eqRoute :: Eq Route
@@ -25,4 +26,5 @@ routeCodec = root $ sum
   , "Post": "posts" / segment
   , "Resume": "resume" / noArgs
   , "Contact": "contact" / noArgs
+  , "Design": "design" / noArgs
   }

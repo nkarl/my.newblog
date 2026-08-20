@@ -24,6 +24,8 @@ serves `dist/` with rebuilds available by restarting the command.
 - `src/Data/Firebase.purs` retrieves post data.
 - `src/Capability/ConvertMarkdown.*` is the Markdown-to-HTML FFI boundary.
 - `src/Page/` contains route-level page components.
+- `DESIGN.md` maps information roles to Bootstrap patterns; `/#/design`
+  renders the live component catalog.
 
 ## Next steps
 

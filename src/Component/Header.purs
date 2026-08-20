@@ -12,63 +12,72 @@ import Routing.Duplex (print)
 component :: forall i p. HH.HTML i p
 component =
   HH.nav
-    [ className "navbar navbar-expand-lg bg-body-tertiary" ]
+    [ className "navbar navbar-expand-lg bg-body-tertiary border-bottom" ]
     [ HH.div
-        [ className "container-fluid" ]
+        [ className "container-lg" ]
         [ HH.a
-            [ className "navbar-brand"
-            , HP.style "display:inline-flex"
+            [ className "navbar-brand d-inline-flex gap-2 fw-bold"
             , HP.href $ makeLocationHash Route.Home
             ]
-            [ HH.div
-                [ HP.style "margin-right:0.5em" ]
+            [ HH.span
+                [ className "text-danger" ]
                 [ HH.text "KARL'S" ]
             , HH.text "BLOG"
             ]
         , HH.button
-            [ className "navbar-toggler", HP.type_ HP.ButtonButton ]
+            [ className "navbar-toggler"
+            , HP.type_ HP.ButtonButton
+            , HP.attr (H.AttrName "data-bs-toggle") "collapse"
+            , HP.attr (H.AttrName "data-bs-target") "#navbarSupportedContent"
+            , HP.attr (H.AttrName "aria-controls") "navbarSupportedContent"
+            , HP.attr (H.AttrName "aria-expanded") "false"
+            , HP.attr (H.AttrName "aria-label") "Toggle navigation"
+            ]
             [ HH.span
-                [ className "navbar-toggle-icon"
-                , HP.attr (H.AttrName "data-bs-toggle") "collapse"
-                , HP.attr (H.AttrName "data-bs-target") "#navbarSupportedContent"
-                ]
+                [ className "navbar-toggler-icon" ]
                 []
             ]
-        , HH.form
-            [ className "d-flex" ]
-            [ HH.div
-                [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
-                [ HH.ul
-                    [ className "navbar-nav me-auto mb-2 mb-lg-0" ]
-                    [ HH.li
-                        [ className "nav-item" ]
-                        [ HH.a
-                            [ className "nav-link active", HP.href $ makeLocationHash Route.Posts ]
-                            [ HH.text "POSTS" ]
-                        ]
-                    , HH.li
-                        [ className "nav-item" ]
-                        [ HH.a
-                            [ className "nav-link", HP.href $ makeLocationHash Route.Resume ]
-                            [ HH.text "RESUME" ]
-                        ]
-                    , HH.li
-                        [ className "nav-item" ]
-                        [ HH.a
-                            [ className "nav-link", HP.href $ makeLocationHash Route.Contact ]
-                            [ HH.text "CONTACT" ]
-                        ]
+        , HH.div
+            [ className "collapse navbar-collapse", HP.id "navbarSupportedContent" ]
+            [ HH.ul
+                [ className "navbar-nav gap-lg-2" ]
+                [ HH.li
+                    [ className "nav-item" ]
+                    [ HH.a
+                        [ className "nav-link", HP.href $ makeLocationHash Route.Posts ]
+                        [ HH.text "POSTS" ]
+                    ]
+                , HH.li
+                    [ className "nav-item" ]
+                    [ HH.a
+                        [ className "nav-link", HP.href $ makeLocationHash Route.Resume ]
+                        [ HH.text "RESUME" ]
+                    ]
+                , HH.li
+                    [ className "nav-item" ]
+                    [ HH.a
+                        [ className "nav-link", HP.href $ makeLocationHash Route.Contact ]
+                        [ HH.text "CONTACT" ]
+                    ]
+                , HH.li
+                    [ className "nav-item" ]
+                    [ HH.a
+                        [ className "nav-link", HP.href $ makeLocationHash Route.Design ]
+                        [ HH.text "DESIGN" ]
                     ]
                 ]
-            , HH.input
-                [ className "form-control me-2 ms-3 fst-italic fs-5"
-                , HP.placeholder "Type to search. . ."
+            , HH.form
+                [ className "d-flex gap-2 ms-lg-auto py-3 py-lg-0" ]
+                [ HH.input
+                    [ className "form-control fst-italic"
+                    , HP.placeholder "Type to search..."
+                    ]
+                , HH.button
+                    [ className "btn btn-outline-danger"
+                    , HP.type_ HP.ButtonButton
+                    ]
+                    [ HH.text "SEARCH" ]
                 ]
-            , HH.button
-                [ className "btn btn-outline-success"
-                , HP.type_ HP.ButtonSubmit
-                ]
-                [ HH.text "SEARCH" ]
             ]
         ]
     ]

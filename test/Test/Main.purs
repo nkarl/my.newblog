@@ -16,6 +16,7 @@ main = traverse_ roundTrips
   , Post "hello-purescript"
   , Resume
   , Contact
+  , Design
   ]
 
 roundTrips :: Route -> Effect Unit

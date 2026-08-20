@@ -48,7 +48,7 @@ component =
 
 render :: forall m. State -> H.ComponentHTML Action () m
 render state =
-  HH.div [ className "post-detail container" ]
+  HH.article [ className "col-lg-8 mx-auto" ]
     [ HH.div_ $ case state.error, state.post of
         Just err, _ ->
           [ HH.text $ "Error: " <> err ]
@@ -61,23 +61,23 @@ render state =
               [ className "my-4" ]
               [ HH.text post.title ]
           , HH.p
-              [ className "text-muted" ]
+              [ className "text-body-secondary mb-1" ]
               [ HH.text $ "Published: " <> fromMaybe "Unknown" post.pubDate ]
           , HH.p
               [ className "lead" ]
               [ HH.text $ "Description: " <> post.description ]
           , HH.p
-              [ className "text-muted" ]
+              [ className "text-body-secondary mb-1" ]
               [ HH.text $ "ID: " <> post.id ]
           , HH.p
-              [ className "text-muted" ]
+              [ className "text-body-secondary mb-1" ]
               [ HH.text $ "Type: " <> fromMaybe "None" post.type ]
           , HH.p
-              [ className "text-muted" ]
+              [ className "text-body-secondary mb-1" ]
               [ HH.text $ "Created: " <> show post.createdAt ]
           -- TODO: Change style later to display HTML instead of MD in pre / code
           , HH.pre
-              [ className "content" ]
+              [ className "post-content mt-4 p-3 bg-body-tertiary border rounded" ]
               [ HH.text post.content ]
           ]
     ]

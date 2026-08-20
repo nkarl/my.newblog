@@ -2,11 +2,10 @@ module Page.Contact where
 
 import Prelude
 
+import Component.PlaceholderPage as PlaceholderPage
 import Effect.Aff.Class (class MonadAff)
 import Halogen as H
 import Halogen.HTML as HH
-import Halogen.HTML.Properties as HP
-import Utils (className)
 
 component :: forall q i o m. MonadAff m => H.Component q i o m
 component =
@@ -20,25 +19,6 @@ component =
     placeholder
 
 placeholder :: forall i p. HH.HTML i p
-placeholder =
-  HH.div_
-    [ HH.div
-        [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
-        [ HH.div
-            [ className "container card-body my-5" ]
-            [ HH.h1
-                [ HP.style "text-align:center" ]
-                [ HH.text "This is the Contact page."
-                ]
-            ]
-        ]
-    , HH.div
-        [ className "card shadow mx-3 mt-3 border border-danger-subtle" ]
-        [ HH.div
-            [ className "container card-body my-5 min-vh-100" ]
-            [ HH.h2
-                [ HP.style "text-align:center" ]
-                [ HH.text "It should display a list of contact details." ]
-            ]
-        ]
-    ]
+placeholder = PlaceholderPage.view
+  "This is the Contact page."
+  "It should display a list of contact details."

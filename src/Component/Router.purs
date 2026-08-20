@@ -12,11 +12,13 @@ import Effect.Aff.Class (class MonadAff)
 import Effect.Class (liftEffect)
 import Halogen as H
 import Halogen.HTML as HH
+import Utils (className)
 import Routing.Duplex as RouteDuplex
 import Routing.Hash (getHash, setHash)
 import Type.Proxy (Proxy(..))
 
 import Page.Contact as Contact
+import Page.Design as Design
 import Page.Home as Home
 import Page.Resume as Resume
 
@@ -36,6 +38,7 @@ type PageSlots =
   , postDetail :: OpaqueSlot String
   , resume :: OpaqueSlot Unit
   , contact :: OpaqueSlot Unit
+  , design :: OpaqueSlot Unit
   )
 
 component :: forall m. MonadAff m => H.Component Query Unit Void m
@@ -68,15 +71,20 @@ component =
   -- render a route with a matching Halogen component
   render :: State -> H.ComponentHTML Action PageSlots m
   render { route } =
-    HH.div_
+    HH.div
+      [ className "d-flex min-vh-100 flex-column" ]
       [ Header.component
-      , case route of
-          Just Home -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
-          Just Posts -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
-          Just (Post id) -> HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
-          Just Resume -> HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
-          Just Contact -> HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
-          Nothing -> HH.div_ [ HH.text "Oh no! That page wasn't found." ]
+      , HH.main
+          [ className "container-lg py-4 flex-grow-1" ]
+          [ case route of
+              Just Home -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
+              Just Posts -> HH.slot_ (Proxy :: _ "home") unit Home.component unit
+              Just (Post id) -> HH.slot_ (Proxy :: _ "postDetail") id PostDetail.component id
+              Just Resume -> HH.slot_ (Proxy :: _ "resume") unit Resume.component unit
+              Just Contact -> HH.slot_ (Proxy :: _ "contact") unit Contact.component unit
+              Just Design -> HH.slot_ (Proxy :: _ "design") unit Design.component unit
+              Nothing -> HH.div_ [ HH.text "Oh no! That page wasn't found." ]
+          ]
       , Footer.component
       ]
 
