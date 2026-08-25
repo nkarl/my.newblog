@@ -16,7 +16,6 @@ package:
     - halogen
     - halogen-bootstrap5
     - halogen-css
-    - js-promise-aff
     - maybe
     - prelude
     - routing

@@ -4,14 +4,12 @@ import Prelude
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..), fromMaybe)
 import Effect.Aff.Class (class MonadAff)
-import Data.Firebase (fetchPostById)
+import Data.Posts (fetchPostById)
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
 import Data.PostData (PostData(..))
-import Effect.Class.Console (log) -- Add this
 import Utils (className)
-
--- TODO: line 78
 
 type State =
   { post :: Maybe PostData
@@ -39,7 +37,6 @@ component =
 
   handleAction :: MonadAff m => Action -> H.HalogenM State Action () Void m Unit
   handleAction Initialize = do
-    H.liftEffect $ log "Initializing PostDetail" -- Add this
     state <- H.get
     result <- H.liftAff $ fetchPostById state.postId
     case result of
@@ -51,10 +48,20 @@ render state =
   HH.article [ className "col-lg-8 mx-auto" ]
     [ HH.div_ $ case state.error, state.post of
         Just err, _ ->
-          [ HH.text $ "Error: " <> err ]
+          [ HH.div [ className "alert alert-danger" ] [ HH.text $ "Error: " <> err ] ]
 
         _, Nothing ->
-          [ HH.text $ "Loading post " <> state.postId <> "..." ]
+          [ HH.div
+              [ className "d-flex align-items-center gap-2 text-body-secondary" ]
+              [ HH.div
+                  [ className "spinner-border spinner-border-sm"
+                  , HP.attr (H.AttrName "role") "status"
+                  , HP.attr (H.AttrName "aria-hidden") "true"
+                  ]
+                  []
+              , HH.text $ "Loading post " <> state.postId <> "…"
+              ]
+          ]
 
         _, Just (PostData post) ->
           [ HH.h1
@@ -66,18 +73,10 @@ render state =
           , HH.p
               [ className "lead" ]
               [ HH.text $ "Description: " <> post.description ]
-          , HH.p
-              [ className "text-body-secondary mb-1" ]
-              [ HH.text $ "ID: " <> post.id ]
-          , HH.p
-              [ className "text-body-secondary mb-1" ]
-              [ HH.text $ "Type: " <> fromMaybe "None" post.type ]
-          , HH.p
-              [ className "text-body-secondary mb-1" ]
-              [ HH.text $ "Created: " <> show post.createdAt ]
-          -- TODO: Change style later to display HTML instead of MD in pre / code
-          , HH.pre
-              [ className "post-content mt-4 p-3 bg-body-tertiary border rounded" ]
-              [ HH.text post.content ]
+          , HH.div
+              [ className "post-content mt-4"
+              , HP.prop (H.PropName "innerHTML") post.content
+              ]
+              []
           ]
     ]

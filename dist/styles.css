@@ -4,9 +4,41 @@
   --bs-body-line-height: 1.65;
 }
 
-/* Markdown is displayed as source until sanitized HTML rendering is added. */
 .post-content {
+  overflow-wrap: break-word;
+}
+
+.post-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.post-content blockquote {
+  margin-block: 1.5rem;
+  padding-left: 1rem;
+  border-left: var(--bs-border-width) solid var(--bs-danger-border-subtle);
+  color: var(--bs-secondary-color);
+}
+
+.post-content pre {
   overflow-x: auto;
-  font: inherit;
-  white-space: pre-wrap;
+  padding: 1rem;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  border-radius: var(--bs-border-radius);
+  background: var(--bs-tertiary-bg);
+  font-size: 0.875em;
+}
+
+.post-content :not(pre) > code {
+  padding: 0.1em 0.3em;
+  border-radius: var(--bs-border-radius-sm);
+  background: var(--bs-tertiary-bg);
+}
+
+.post-content table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
 }

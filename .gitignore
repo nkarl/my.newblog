@@ -11,4 +11,5 @@ generated-docs/
 .psa*
 .spago
 dist/*.js
+dist/posts.json
 **/**/Data/Articles/

@@ -8,7 +8,7 @@ import Data.Maybe (Maybe(..), fromMaybe)
 import Data.PostData (PostData(..))
 import Data.Route (Route(..), routeCodec)
 import Effect.Aff.Class (class MonadAff)
-import Data.Firebase (fetchPosts)
+import Data.Posts (fetchPosts)
 import Foreign.Object as FO
 import Halogen as H
 import Halogen.HTML as HH
@@ -50,11 +50,22 @@ render state =
   HH.section [ className "col-lg-10 mx-auto" ]
     [ case state.error, state.posts of
         Just err, _ ->
-          HH.div_ [ HH.text $ "Error: " <> err ]
+          HH.div [ className "alert alert-danger" ] [ HH.text $ "Error: " <> err ]
         _, Nothing ->
-          HH.div_ [ HH.text "Loading posts..." ]
+          HH.div
+            [ className "d-flex align-items-center gap-2 text-body-secondary" ]
+            [ HH.div
+                [ className "spinner-border spinner-border-sm"
+                , HP.attr (H.AttrName "role") "status"
+                , HP.attr (H.AttrName "aria-hidden") "true"
+                ]
+                []
+            , HH.text "Loading posts…"
+            ]
         _, Just posts ->
-          HH.div_
+          if FO.isEmpty posts then
+            HH.div [ className "alert alert-secondary" ] [ HH.text "No posts have been published yet." ]
+          else HH.div_
             [ HH.div
                 [ className "row d-none d-sm-flex fw-bold text-body-secondary text-uppercase small border-bottom py-2" ]
                 [ HH.div

@@ -20,7 +20,6 @@
             "halogen",
             "halogen-bootstrap5",
             "halogen-css",
-            "js-promise-aff",
             "maybe",
             "prelude",
             "routing",
@@ -1284,23 +1283,6 @@
         "maybe",
         "newtype",
         "prelude"
-      ]
-    },
-    "js-promise-aff": {
-      "type": "registry",
-      "version": "1.0.0",
-      "integrity": "sha256-gEKAdNnTWjXS+tTp/AhYl/ezloKfuoQFcBKrdOx2USo=",
-      "dependencies": [
-        "aff",
-        "control",
-        "effect",
-        "either",
-        "exceptions",
-        "foreign",
-        "js-promise",
-        "maybe",
-        "prelude",
-        "transformers"
       ]
     },
     "js-uri": {
