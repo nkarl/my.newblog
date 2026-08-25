@@ -8,6 +8,16 @@ them into a dated release section when publishing a release.
 
 ### Changed
 
+- Made `data/` the source of truth for published articles and excluded
+  `data/.wip/` from publication.
+- Added a build-time content pipeline that validates front matter, converts
+  Markdown/MDX to HTML, sanitizes it, rewrites internal post links, and emits
+  `dist/posts.json`.
+- Replaced Firebase retrieval with local static post loading through
+  `Data.Posts` and rendered sanitized article HTML in `PostDetail`.
+- Added scoped article typography for code, blockquotes, tables, and images.
+- Aligned post loading, error, and empty states with the documented Bootstrap
+  design patterns.
 - Added `DESIGN.md` as the source of truth for information hierarchy,
   Bootstrap recipes, responsive conventions, and component ownership.
 - Added a live `/#/design` catalog covering typography, actions, information
@@ -40,6 +50,10 @@ them into a dated release section when publishing a release.
 
 ### Fixed
 
+- Prevented work-in-progress content and unsupported MDX import statements from
+  appearing in the published post list.
+- Prevented generated article markup from injecting scripts or unsafe
+  attributes into the page.
 - Fixed post links whose default anchor destination could overwrite the
   programmatically selected detail route.
 - Fixed post-detail navigation from the home page being discarded by an
@@ -53,8 +67,6 @@ them into a dated release section when publishing a release.
 
 ### Remaining
 
-- Convert post Markdown through `Capability.ConvertMarkdown` and render only
-  sanitized HTML in `PostDetail`.
-- Move the Firebase database URL into environment-specific configuration.
 - Add HTTP, JSON-decoding, and component-state tests.
-- Add authenticated Firebase authoring rules and a content publishing pipeline.
+- Restore the missing images referenced by the October 2024 MDX article.
+- Add optional Mermaid and math rendering for articles that use those formats.

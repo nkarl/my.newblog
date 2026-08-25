@@ -100,14 +100,10 @@ and a native element appropriate to the action.
 
 ## Custom CSS boundary
 
-Custom CSS currently owns only:
-
-- Bootstrap body typography variable overrides.
-- `.post-content`, while Markdown is rendered as source text.
-
-When Markdown becomes HTML, this boundary may grow to cover prose-specific
-elements such as `pre`, `code`, `blockquote`, tables, and responsive images.
-Those rules should remain scoped beneath one article-content class.
+Custom CSS currently owns only Bootstrap body typography variable overrides and
+prose-specific rules beneath `.post-content`: code blocks, inline code,
+blockquotes, tables, and responsive images. Generated article HTML must keep all
+custom styling inside that boundary.
 
 ## Change checklist
 

@@ -1,7 +1,6 @@
 # Karl's Blog
 
-A blog application built with PureScript, Halogen, Routing.Duplex, and Firebase
-Realtime Database.
+A static blog application built with PureScript, Halogen, and Routing.Duplex.
 
 ## Development
 
@@ -21,16 +20,17 @@ serves `dist/` with rebuilds available by restarting the command.
 
 - `src/Component/Router.purs` owns the application shell and selected page.
 - `src/Data/Route.purs` is the single source of truth for browser routes.
-- `src/Data/Firebase.purs` retrieves post data.
-- `src/Capability/ConvertMarkdown.*` is the Markdown-to-HTML FFI boundary.
+- `data/` contains the Markdown and MDX article sources; `.wip/` is excluded.
+- `scripts/build-content.mjs` validates front matter, converts and sanitizes
+  Markdown, and generates `dist/posts.json`.
+- `src/Data/Posts.purs` retrieves the generated static post data.
 - `src/Page/` contains route-level page components.
 - `DESIGN.md` maps information roles to Bootstrap patterns; `/#/design`
   renders the live component catalog.
 
 ## Next steps
 
-- Render converted Markdown in `PostDetail` using sanitized HTML.
-- Move the Firebase URL into environment-specific configuration.
-- Add loading, decoding, and HTTP tests around post retrieval.
-- Replace the public Firebase write rule with authenticated authoring rules
-  before adding a content publishing pipeline.
+- Add decoding and HTTP tests around static post retrieval.
+- Restore the two illustration assets referenced by the October 2024 MDX post.
+- Add richer rendering for Mermaid and math blocks if those formats remain in
+  published articles.
