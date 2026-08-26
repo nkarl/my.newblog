@@ -3,7 +3,7 @@
     "version": "0.0.1.0",
     "scripts": {
         "content": "node scripts/build-content.mjs",
-        "clean": "rm -rf output .spago dist/*.js .cache",
+        "clean": "rm -rf output .spago dist/*.js dist/posts.json dist/vendor .cache",
         "build": "pnpm content && spago build",
         "test": "pnpm content && spago test",
         "serve": "pnpm build && esbuild --bundle index.js --outfile=dist/index.js --servedir=dist",
@@ -16,7 +16,9 @@
     "dependencies": {
         "@wcj/markdown-to-html": "^3.0.4",
         "esbuild": "^0.25.1",
-        "sanitize-html": "^2.17.7"
+        "katex": "^0.18.4",
+        "rehype-sanitize": "^6.0.0",
+        "remark-math": "^6.0.0"
     },
     "devDependencies": {
         "purescript": "^0.15.16",

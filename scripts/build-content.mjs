@@ -1,7 +1,12 @@
 import { readdir, readFile, writeFile } from "node:fs/promises";
 import { extname, join, parse } from "node:path";
 import markdown from "@wcj/markdown-to-html";
-import sanitizeHtml from "sanitize-html";
+import {
+  renderTex,
+  prepareTexAssets,
+  validateTexOutput
+} from "./Capability/RenderTex.mjs";
+import { sanitizeContent } from "./Capability/SanitizeContent.mjs";
 
 const sourceDirectory = "data";
 const outputFile = "dist/posts.json";
@@ -15,9 +20,12 @@ const files = (await readdir(sourceDirectory, { withFileTypes: true }))
 const entries = await Promise.all(files.map(buildPost));
 const posts = Object.fromEntries(entries.map((post) => [post.id, post]));
 validateInternalPostLinks(posts);
+const renderedTexExpressions = validateTexOutput(posts);
 
+await prepareTexAssets();
 await writeFile(outputFile, `${JSON.stringify(posts, null, 2)}\n`);
 console.log(`Built ${entries.length} posts into ${outputFile}`);
+console.log(`Rendered ${renderedTexExpressions} TeX expressions with KaTeX`);
 
 async function buildPost(fileName) {
   const source = await readFile(join(sourceDirectory, fileName), "utf8");
@@ -26,7 +34,11 @@ async function buildPost(fileName) {
   const datePrefix = fileName.slice(0, 10);
   const createdAt = Date.parse(`${datePrefix}T00:00:00Z`);
   const preparedBody = prepareMdx(body);
-  const converted = rewriteInternalLinks(markdown(preparedBody));
+  const converted = rewriteInternalLinks(markdown(preparedBody, {
+    remarkPlugins: renderTex.remarkPlugins,
+    rehypePlugins: [sanitizeContent],
+    katexOptions: renderTex.katexOptions
+  }));
 
   return {
     id,
@@ -35,18 +47,7 @@ async function buildPost(fileName) {
     pubDate: attributes.pubDate ?? datePrefix,
     createdAt,
     type: extname(fileName).slice(1),
-    content: sanitizeHtml(converted, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img", "details", "summary", "kbd"]),
-      allowedAttributes: {
-        ...sanitizeHtml.defaults.allowedAttributes,
-        "*": ["class"],
-        a: ["href", "name", "target", "rel"],
-        code: ["class"],
-        img: ["src", "alt", "title", "width", "height", "loading"]
-      },
-      allowedSchemes: ["http", "https", "mailto"],
-      allowProtocolRelative: false
-    })
+    content: converted
   };
 }
 
