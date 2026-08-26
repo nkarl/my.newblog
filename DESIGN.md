@@ -1,8 +1,6 @@
 # UI Design Language
 
-This document is the source of truth for how the blog maps information roles to
-Bootstrap components and utilities. Bootstrap supplies the visual vocabulary;
-the rules below decide when each token is used.
+This document is the source of truth for how the blog maps information roles to Bootstrap components and utilities. Bootstrap supplies the visual vocabulary; the rules below decide when each token is used.
 
 The live catalog is available at `/#/design` during development.
 
@@ -10,12 +8,9 @@ The live catalog is available at `/#/design` during development.
 
 1. Prefer a documented Bootstrap component or utility over custom CSS.
 2. Style information by its role, not by the page on which it appears.
-3. Extract repeated markup into a PureScript view or component; keep the
-   Bootstrap classes visible at the point where the pattern is implemented.
-4. Add custom CSS only for article typography or behavior Bootstrap cannot
-   express clearly.
-5. Every new reusable visual pattern must be recorded in the inventory below
-   and demonstrated on the design catalog page.
+3. Extract repeated markup into a PureScript view or component; keep the Bootstrap classes visible at the point where the pattern is implemented.
+4. Add custom CSS only for article typography or behavior Bootstrap cannot express clearly.
+5. Every new reusable visual pattern must be recorded in the inventory below and demonstrated on the design catalog page.
 
 ## Foundations
 
@@ -30,8 +25,7 @@ The live catalog is available at `/#/design` during development.
 | Metadata | `small text-body-secondary` | Dates, types, IDs, supporting facts |
 | Prose | Body defaults | Article and ordinary page copy |
 
-The body uses EB Garamond through `--bs-body-font-family`. Font size and line
-height are Bootstrap variable overrides in `dist/styles.css`.
+The body uses EB Garamond through `--bs-body-font-family`. Font size and line height are Bootstrap variable overrides in `dist/styles.css`.
 
 ### Color
 
@@ -65,8 +59,7 @@ Avoid one-off inline spacing and custom pixel/rem values.
 
 - The application shell uses `container-lg`.
 - Reading and post-list content use `col-lg-8 mx-auto` or `col-lg-10 mx-auto`.
-- Start mobile-first; add `sm`, `md`, or `lg` modifiers only when content needs
-  a different relationship at that width.
+- Start mobile-first; add `sm`, `md`, or `lg` modifiers only when content needs a different relationship at that width.
 - Post title/date rows stack below `sm` and form `8/4` columns at `sm` and up.
 - Navigation collapses below Bootstrap's `lg` breakpoint.
 
@@ -95,15 +88,13 @@ Every data-backed component should account for:
 - Empty: `alert alert-secondary` explaining that no content exists.
 - Ready: the normal content pattern.
 
-Interactive controls must include visible focus behavior, an accessible name,
-and a native element appropriate to the action.
+Interactive controls must include visible focus behavior, an accessible name, and a native element appropriate to the action.
 
 ## Custom CSS boundary
 
-Custom CSS currently owns only Bootstrap body typography variable overrides and
-prose-specific rules beneath `.post-content`: code blocks, inline code,
-blockquotes, tables, and responsive images. Generated article HTML must keep all
-custom styling inside that boundary.
+Custom CSS currently owns only Bootstrap body typography variable overrides and prose-specific rules beneath `.post-content`: code blocks, inline code, blockquotes, tables, and responsive images. Generated article HTML must keep all custom styling inside that boundary.
+
+Display math is pre-rendered with KaTeX and may scroll horizontally within `.post-content` on narrow screens rather than widening the page.
 
 ## Change checklist
 
